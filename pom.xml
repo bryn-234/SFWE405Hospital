@@ -60,7 +60,7 @@
             <plugin>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-            </plugin>
+                <version>1.18.30</version> </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

@@ -33,8 +33,8 @@ public class Appointment {
     public void setReasonForVisit(String reasonForVisit) {this.reasonForVisit = reasonForVisit;}
     public String getStatus() { return status; }
     public void setStatus(String status) {this.status = status; }
-    public Patient getPatient() { return patient; }
-    public void setPatient(Patient patient) { this.patient = patient; }
+    //public Patient getPatient() { return patient; }
+    //public void setPatient(Patient patient) { this.patient = patient; }
     public Doctor getDoctor() { return doctor; }
     public void setDoctor(Doctor doctor) { this.doctor = doctor; }
     public Department getDepartment() { return department; }
