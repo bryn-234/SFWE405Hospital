@@ -12,6 +12,9 @@ public class Appointment {
     private LocalDateTime appointmentDate;
     private String reasonForVisit;
     private String status;
+    private int cost;
+    private int roomNum;
+
 
     @ManyToOne
     @JoinColumn(name = "doctor_id")
@@ -20,6 +23,9 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
+
+    @ManyToOne
+    private Patient patient;
 
     //Constructors
     public Appointment() {}
@@ -33,6 +39,10 @@ public class Appointment {
     public void setReasonForVisit(String reasonForVisit) {this.reasonForVisit = reasonForVisit;}
     public String getStatus() { return status; }
     public void setStatus(String status) {this.status = status; }
+    public int getCost() {return cost;}
+    public void setCost(int cost) {this.cost = cost;}
+    public int getRoomNum() {return roomNum;}
+    public void setRoomNum(int roomNum) {this.roomNum = roomNum;}
     public Patient getPatient() { return patient; }
     public void setPatient(Patient patient) { this.patient = patient; }
     public Doctor getDoctor() { return doctor; }
