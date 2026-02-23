@@ -12,10 +12,11 @@ public class Doctor {
 
     private String name;
 
-    @OneToMany
+    @OneToMany(mappedBy = "doctor")
     private Set<Appointment> appointments;
     
     @ManyToOne
+    @JoinColumn(name = "department_id")
     private Department department;
 
     public Doctor(){}
