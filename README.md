@@ -31,10 +31,10 @@ Each entity has a corresponding **Spring Data JPA repository** to manage databas
 - **Repositories**  
   Each entity has a dedicated repository interface extending `JpaRepository`, providing CRUD functionality.
 
-- **Services** *(in progress)*
+- **Services** *(in progress)*  
   A service layer for business logic is planned and will be implemented in future updates.
 
-- **Testing** *(in progress)*
+- **Testing** *(in progress)*  
   Endpoints are being tested using **Postman**, with a complete Postman workspace to be developed as the project progresses.
 
 --- 
