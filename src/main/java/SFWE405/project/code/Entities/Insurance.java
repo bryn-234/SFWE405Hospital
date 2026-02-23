@@ -39,4 +39,9 @@ public class Insurance {
 
     public Set<Patient> getPatients() { return patients; }
     public void setPatients(Set<Patient> patients) { this.patients = patients; }
+
+    public void setName(String name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setName'");
+    }
 }

@@ -1,6 +1,8 @@
 package SFWE405.project.code.Entities;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -9,7 +11,7 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime appointmentDate;
+    private LocalDate appointmentDate;
     private String reasonForVisit;
     private String status;
     private int cost;
@@ -36,8 +38,8 @@ public class Appointment {
     //Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public LocalDateTime getAppointmentDate() { return appointmentDate; }
-    public void setAppointmentDate(LocalDateTime appointmentDate) {this.appointmentDate = appointmentDate; }
+    public LocalDate getAppointmentDate() { return appointmentDate; }
+    public void setAppointmentDate(LocalDate appointmentDate) {this.appointmentDate = appointmentDate; }
     public String getReasonForVisit() { return reasonForVisit; }
     public void setReasonForVisit(String reasonForVisit) {this.reasonForVisit = reasonForVisit;}
     public String getStatus() { return status; }

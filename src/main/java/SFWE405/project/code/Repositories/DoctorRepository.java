@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import SFWE405.project.code.Entities.Doctor;
 
-public interface DoctorRespository extends CrudRepository<Doctor, Long>{
+public interface DoctorRepository extends CrudRepository<Doctor, Long>{
     List<Doctor> findByName(String name);
 
     Doctor findById(long id);

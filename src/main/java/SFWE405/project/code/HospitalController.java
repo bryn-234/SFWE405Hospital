@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.RestController;
 import SFWE405.project.code.Entities.Department;
 import SFWE405.project.code.Entities.Doctor;
 import SFWE405.project.code.Entities.Patient;
-import SFWE405.project.code.Repositories.DepartmentRespository;
-import SFWE405.project.code.Repositories.DoctorRespository;
+import SFWE405.project.code.Repositories.DepartmentRepository;
+import SFWE405.project.code.Repositories.DoctorRepository;
 import SFWE405.project.code.Repositories.PatientRepository;
 
 @RestController
 public class HospitalController {
     @Autowired
-    private DoctorRespository doctorRepo;
+    private DoctorRepository doctorRepo;
 
     @Autowired
     private PatientRepository patientRepo;
 
     @Autowired 
-    private DepartmentRespository departmentRepo;
+    private DepartmentRepository departmentRepo;
 
     @GetMapping("/HMS/patients")
     public List<Patient> showPatients(){

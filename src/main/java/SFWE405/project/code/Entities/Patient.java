@@ -8,7 +8,9 @@ import java.util.Set;
 @Entity
 public class Patient {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ssn;
+    
 
     private String firstName;
     private String lastName;

@@ -10,13 +10,13 @@ public class MedicalRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String diagnosis;
-    private String treatmentPlan;
-    private Set<String> prescriptions;
+    private String diagnosis = new String();
+    private String treatmentPlan = new String();
+    private Set<String> prescriptions = new java.util.HashSet<>();
     private LocalDate lastUpdated;
-    private Set<String> allergies;
-    private Set<String> vaccines;
-    private Set<String> conditions;
+    private Set<String> allergies = new java.util.HashSet<>();
+    private Set<String> vaccines = new java.util.HashSet<>();
+    private Set<String> conditions = new java.util.HashSet<>();
 
     //Commenting this out to match the current domain diagram we have. 
     // We can always add it back in later if we decide to include it.
