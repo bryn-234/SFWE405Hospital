@@ -36,8 +36,3 @@ Each entity has a corresponding **Spring Data JPA repository** to manage databas
 
 - **Testing**  
   Endpoints are tested using **Postman**, ensuring proper request/response handling.
-
-### Installation
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
