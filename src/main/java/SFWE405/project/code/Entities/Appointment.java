@@ -20,11 +20,14 @@ public class Appointment {
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
-    @ManyToOne
+    //I commented this out to match the domain diagram we currently have. 
+    //We can always add it back in later if we decide to include it.
+    /*@ManyToOne
     @JoinColumn(name = "department_id")
-    private Department department;
+    private Department department;*/
 
     @ManyToOne
+    @JoinColumn(name = "patient_id")
     private Patient patient;
 
     //Constructors
@@ -47,7 +50,10 @@ public class Appointment {
     public void setPatient(Patient patient) { this.patient = patient; }
     public Doctor getDoctor() { return doctor; }
     public void setDoctor(Doctor doctor) { this.doctor = doctor; }
-    public Department getDepartment() { return department; }
-    public void setDepartment(Department department) { this.department = department; }
+   
+    //I commented this out to match the domain diagram we currently have
+
+    //public Department getDepartment() { return department; }
+    //public void setDepartment(Department department) { this.department = department; }
                                                
 }
