@@ -15,13 +15,15 @@ public class Patient {
     private LocalDate birthDate;
     private char sex;
 
-    @OneToMany
+    @OneToMany(mappedBy = "patient")
     private Set<Appointment> appointments = new HashSet<Appointment>();
 
     @OneToOne
+    @JoinColumn(name = "medical_record_id")
     private MedicalRecord medicalRecord = new MedicalRecord();
 
     @ManyToOne
+    @JoinColumn(name = "insurance_id")
     private Insurance insurance = new Insurance();
 
     public Patient(){}
