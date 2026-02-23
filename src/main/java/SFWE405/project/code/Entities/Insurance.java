@@ -21,7 +21,7 @@ public class Insurance {
     //Joseph -- One insurance can cover many patients, but each patient can only have one insurance.
     //This was mapped as OneToOne, I changed it to oneToMany to match the domain diagram. 
     @OneToMany(mappedBy = "insurance")
-    private Set<Patient> patients = new HashSet<Patient>();
+    private Set<Patient> patients = new HashSet<>();
 
     public Insurance() {}
 

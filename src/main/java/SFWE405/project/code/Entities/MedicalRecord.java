@@ -2,6 +2,7 @@ package SFWE405.project.code.Entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -12,11 +13,19 @@ public class MedicalRecord {
 
     private String diagnosis = new String();
     private String treatmentPlan = new String();
-    private Set<String> prescriptions = new java.util.HashSet<>();
     private LocalDate lastUpdated;
-    private Set<String> allergies = new java.util.HashSet<>();
-    private Set<String> vaccines = new java.util.HashSet<>();
-    private Set<String> conditions = new java.util.HashSet<>();
+
+    @ElementCollection
+    private Set<String> prescriptions = new HashSet<>();
+
+    @ElementCollection
+    private Set<String> allergies = new HashSet<>();
+
+    @ElementCollection
+    private Set<String> vaccines = new HashSet<>();
+
+    @ElementCollection
+    private Set<String> conditions = new HashSet<>();
 
     //Commenting this out to match the current domain diagram we have. 
     // We can always add it back in later if we decide to include it.

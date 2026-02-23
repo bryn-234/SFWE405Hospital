@@ -1,6 +1,8 @@
 package SFWE405.project.code.Entities;
 
 import jakarta.persistence.*;
+
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -15,7 +17,7 @@ public class Hospital {
     private int occupancy;
 
     @OneToMany(mappedBy = "hospital")
-    private Set<Department> departments;
+    private Set<Department> departments = new HashSet<>();
 
     public Hospital() {}
 

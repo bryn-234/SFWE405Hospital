@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Patient {
     @Id
@@ -17,10 +19,11 @@ public class Patient {
     private LocalDate birthDate;
     private char sex;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "patient")
-    private Set<Appointment> appointments = new HashSet<Appointment>();
+    private Set<Appointment> appointments = new HashSet<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "medical_record_id")
     private MedicalRecord medicalRecord = new MedicalRecord();
 
