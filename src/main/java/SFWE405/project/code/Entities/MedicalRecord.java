@@ -18,12 +18,14 @@ public class MedicalRecord {
     private Set<String> vaccines;
     private Set<String> conditions;
 
-
-    @ManyToOne
+    //Commenting this out to match the current domain diagram we have. 
+    // We can always add it back in later if we decide to include it.
+    /*@ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor recordedBy;
+    */
 
-    @OneToOne
+    @OneToOne(mappedBy = "medicalRecord")
     private Patient patient;
 
     //Constructors
@@ -48,7 +50,10 @@ public class MedicalRecord {
     public void addConditions(String condition) {this.conditions.add(condition);}
     public Patient getPatient() { return patient;}
     public void setPatient(Patient patient) { this.patient = patient; }
-    public Doctor getRecordedBy() { return recordedBy; }
-    public void setRecordedBy(Doctor recordedBy) { this.recordedBy = recordedBy; }
+    
+    //Commenting this out to match the current domain diagram we have.
+
+    //public Doctor getRecordedBy() { return recordedBy; }
+    //public void setRecordedBy(Doctor recordedBy) { this.recordedBy = recordedBy; }
     
 }
