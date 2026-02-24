@@ -1,0 +1,158 @@
+{
+  "info": {
+    "_postman_id": "4797567f-556a-49a9-9ef0-3ff7d99ce748",
+    "name": "SFWE405Hospital",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51749167",
+    "_collection_link": "https://go.postman.co/collection/51749167-4797567f-556a-49a9-9ef0-3ff7d99ce748?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get Patients",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/HMS/patients",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "patients"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Doctors",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/HMS/doctors",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "doctors"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Department",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/HMS/departments",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "departments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add Patient via JSON",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"firstName\": \"Joseph\",\r\n    \"lastName\": \"Corella\",\r\n    \"birthDate\": \"2005-03-24\",\r\n    \"sex\": \"Male\",\r\n    \"appointments\": [],\r\n    \"medicalRecord\": null,\r\n    \"insurance\": null\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/addPatient",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "addPatient"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add Doctor via JSON",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\" : \"Dr. Cerny\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/addDoctor",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "addDoctor"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add Department via JSON",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"firstName\": \"Joseph\",\r\n    \"lastName\": \"Corella\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/addDepartment",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "addDepartment"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
