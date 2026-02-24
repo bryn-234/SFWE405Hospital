@@ -10,8 +10,6 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 @Entity
 @Getter
 @Setter
@@ -20,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ssn;
+    private Long id;
 
     private String firstName;
     private String lastName;
@@ -31,7 +29,6 @@ public class Patient {
     @OneToMany(mappedBy = "patient")
     private Set<Appointment> appointments = new HashSet<>();
 
-    @JsonManagedReference
     @OneToOne
     @JoinColumn(name = "medical_record_id")
     private MedicalRecord medicalRecord;

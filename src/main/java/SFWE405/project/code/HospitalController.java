@@ -2,12 +2,11 @@ package SFWE405.project.code;
 
 import java.util.List;
 
-import javax.management.DefaultLoaderRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import SFWE405.project.code.Entities.Department;
@@ -18,6 +17,7 @@ import SFWE405.project.code.Repositories.DoctorRepository;
 import SFWE405.project.code.Repositories.PatientRepository;
 
 @RestController
+@RequestMapping("/HMS")
 public class HospitalController {
     @Autowired
     private DoctorRepository doctorRepo;
@@ -27,34 +27,34 @@ public class HospitalController {
 
     @Autowired 
     private DepartmentRepository departmentRepo;
-
-    @GetMapping("/HMS/patients")
-    public List<Patient> showPatients(){
+    
+    @GetMapping("/patients")
+    public List<Patient> getPatients(){
         return patientRepo.findAll();
     }
 
-    @PostMapping("/HMS/addPatient")
+    @PostMapping("/addPatient")
     public Patient addPatient(@RequestBody Patient p){
-        System.out.println("SSN: " + p.getSSN());
+        System.out.println(p);
         return patientRepo.save(p);
     }
 
-    @GetMapping("/HMS/doctors")
-    public List<Doctor> showDoctors(){
+    @GetMapping("/doctors")
+    public List<Doctor> getDoctors(){
         return (List<Doctor>) doctorRepo.findAll();
     }
 
-    @PostMapping("/HMS/addDoctor")
+    @PostMapping("/addDoctor")
     public Doctor addDoctor(@RequestBody Doctor d){
         return doctorRepo.save(d);
     }
 
-    @GetMapping("/HMS/departments")
+    @GetMapping("/departments")
     public List<Department> getDerpartments(){
         return (List<Department>) departmentRepo.findAll();
     }
 
-    @PostMapping("/HMS/addDepartment")
+    @PostMapping("/addDepartment")
     public Department addDepartment(@RequestBody Department d){
         return departmentRepo.save(d);
     }

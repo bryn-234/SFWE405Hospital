@@ -8,8 +8,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 @Entity
 @Getter
 @Setter
@@ -26,7 +24,6 @@ public class Appointment {
     private int cost;
     private int roomNum;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
@@ -37,7 +34,6 @@ public class Appointment {
     @JoinColumn(name = "department_id")
     private Department department;*/
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;                   
