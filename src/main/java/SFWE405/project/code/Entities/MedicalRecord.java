@@ -1,54 +1,48 @@
 package SFWE405.project.code.Entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class MedicalRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String diagnosis;
-    private String treatmentPlan;
-    private Set<String> prescriptions;
+    private String diagnosis = new String();
+    private String treatmentPlan = new String();
     private LocalDate lastUpdated;
-    private Set<String> allergies;
-    private Set<String> vaccines;
-    private Set<String> conditions;
 
+    @ElementCollection
+    private Set<String> prescriptions = new HashSet<>();
 
-    @ManyToOne
+    @ElementCollection
+    private Set<String> allergies = new HashSet<>();
+
+    @ElementCollection
+    private Set<String> vaccines = new HashSet<>();
+
+    @ElementCollection
+    private Set<String> conditions = new HashSet<>();
+
+    //Commenting this out to match the current domain diagram we have. 
+    // We can always add it back in later if we decide to include it.
+    /*@ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor recordedBy;
+    */
 
-    @OneToOne
+    @OneToOne(mappedBy = "medicalRecord")
     private Patient patient;
-
-    //Constructors
-    public MedicalRecord() {}
-
-    //Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getDiagnosis() { return diagnosis; }
-    public void setDiagnosis(String diagnosis) { this.diagnosis = diagnosis; }
-    public String getTreatmentPlan() { return treatmentPlan; }
-    public void setTreatmentPlan(String treatmentPlan) { this.treatmentPlan = treatmentPlan; }
-    public Set<String> getPrescriptions() { return prescriptions; }
-    public void setPrescriptions(String prescriptions) { this.prescriptions.add(prescriptions); }
-    public LocalDate getLastUpdated() { return lastUpdated; }
-    public void setLastUpdated(LocalDate lastUpdated) { this.lastUpdated = lastUpdated; }
-    public Set<String> getAllergies() {return allergies;}
-    public void addAllergies(String allergy) {this.allergies.add(allergy);}
-    public Set<String> getVaccines(){return vaccines;}
-    public void addVaccines(String vaccine) {this.vaccines.add(vaccine);}
-    public Set<String> getConditions() {return conditions;}
-    public void addConditions(String condition) {this.conditions.add(condition);}
-    public Patient getPatient() { return patient;}
-    public void setPatient(Patient patient) { this.patient = patient; }
-    public Doctor getRecordedBy() { return recordedBy; }
-    public void setRecordedBy(Doctor recordedBy) { this.recordedBy = recordedBy; }
-    
 }
