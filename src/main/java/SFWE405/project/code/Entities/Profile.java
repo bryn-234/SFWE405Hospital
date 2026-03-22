@@ -21,8 +21,7 @@ public class Profile {
 
     @Column(unique = true0)
     private String email;
-
-    @Column(unique = true)
+    
     private String password;
 
     @OneToOne
