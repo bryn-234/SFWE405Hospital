@@ -27,13 +27,5 @@ public class Patient {
     private String sex;
     
     @OneToMany(mappedBy = "patient")
-    private Set<Appointment> appointments = new HashSet<>();
-
-    @OneToOne
-    @JoinColumn(name = "medical_record_id")
-    private MedicalRecord medicalRecord;
-
-    @ManyToOne
-    @JoinColumn(name = "insurance_id")
-    private Insurance insurance;    
+    private Set<Appointment> appointments = new HashSet<>(); 
 }

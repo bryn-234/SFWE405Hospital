@@ -19,7 +19,7 @@ public class Profile {
     @Column(unique = true)
     private String username;
 
-    @Column(unique = true0)
+    @Column(unique = true)
     private String email;
     
     private String password;
