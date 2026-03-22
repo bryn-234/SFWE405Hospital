@@ -24,7 +24,7 @@ public class Profile {
     private Doctor doctor;
 
     @OneToOne
-    private Patient patient;
+    private Patient patient_id;
 
 
 }
