@@ -22,6 +22,7 @@ public class Profile {
     @Column(unique = true)
     private String email;
     
+    private String role; // "DOCTOR" or "PATIENT"
     private String password;
 
     @OneToOne
