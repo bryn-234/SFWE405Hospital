@@ -17,6 +17,7 @@ import SFWE405.project.code.Entities.Hospital;
 import SFWE405.project.code.Repositories.AppointmentRepository;
 import SFWE405.project.code.Repositories.HospitalRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AppointmentService {
@@ -41,6 +42,7 @@ public class AppointmentService {
      * @return the updated Appointment object
      * @throws RuntimeException if the appointment or hospital is not found
      */
+    @Transactional
     public Appointment updateAppointmentStatus(Long appointmentId, String newStatus) {
 
         Appointment appointment = appointmentRepository.findById(appointmentId)
