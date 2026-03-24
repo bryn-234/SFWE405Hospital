@@ -69,8 +69,7 @@ public class AppointmentService {
 
         appointment.setStatus(newStatus);
 
-        hospitalRepository.save(hospital);
-        return appointmentRepository.save(appointment);
+        return appointment;
     }
 
 
