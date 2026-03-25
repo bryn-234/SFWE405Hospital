@@ -25,6 +25,4 @@ public class Profile {
 
     @OneToOne
     private Patient patient;
-
-
 }
