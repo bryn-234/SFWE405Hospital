@@ -24,8 +24,11 @@ public class Patient {
     private String lastName;
     
     private LocalDate birthDate;
+    private String phoneNumber;
     private String sex;
     
     @OneToMany(mappedBy = "patient")
-    private Set<Appointment> appointments = new HashSet<>(); 
+    private Set<Appointment> appointments = new HashSet<>();
+
+
 }

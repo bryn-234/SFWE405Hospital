@@ -26,4 +26,19 @@ public class Hospital {
 
     @OneToMany(mappedBy = "hospital")
     private Set<Department> departments = new HashSet<>();
+
+    public void incrementOccupancy() {
+        if (occupancy < capacity) {
+            occupancy++;
+        } else {
+            throw new IllegalStateException("Hospital is at full capacity.");
+        }
+    }
+
+    public void decrementOccupancy() {
+        if(occupancy > 0) {
+            occupancy--;
+        }
+    }
+
 }
