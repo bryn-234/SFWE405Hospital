@@ -70,6 +70,44 @@ public class AppointmentService {
         appointment.setStatus(newStatus);
 
         return appointment;
+    } 
+
+    //Implement requirements 1.1,1.2,1.4 (schedule appointment, edit appointment, check-in)
+    public Appointment schedule(AppointmentRequest req, Patient patient) {
+    // Business Rule: Check if the slot is already taken
+    if (repo.existsByAppointmentTime(req.getTime())) {
+        throw new SlotUnavailableException("This time slot is already booked.");
+    }
+    
+    Appointment appt = new Appointment();
+    appt.setPatient(patient);
+    appt.setAppointmentTime(req.getTime());
+    appt.setStatus(AppointmentStatus.PENDING); // Initial state
+    return repo.save(appt);
+    } 
+
+    public Appointment edit(Long id, LocalDateTime newTime) {
+    Appointment appt = repo.findById(id).orElseThrow();
+    
+    // Business Rule: Cannot edit if already checked in
+    if (appt.getStatus() == AppointmentStatus.CHECKED_IN) {
+        throw new IllegalStateException("Cannot edit an appointment after check-in.");
+    }
+    
+    appt.setAppointmentTime(newTime);
+    return repo.save(appt);
+    } 
+
+    public void checkIn(Long id) {
+    Appointment appt = repo.findById(id).orElseThrow();
+    
+    // Business Rule: Check-in must be on the same day
+    if (!appt.getAppointmentTime().toLocalDate().equals(LocalDate.now())) {
+        throw new ValidationException("Check-in is only available on the day of the appointment.");
+    }
+    
+    appt.setStatus(AppointmentStatus.CHECKED_IN);
+    repo.save(appt);
     }
 
 
