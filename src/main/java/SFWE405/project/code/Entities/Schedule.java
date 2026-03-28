@@ -22,7 +22,7 @@ public class Schedule {
     private Boolean isOpen;
     private String availability;
 
-    @OneToMany(mappedBy = "timeSlot")
+    @OneToMany(mappedBy = "schedule")
     private Set<TimeSlot> timeSlot = new HashSet<>();
 
     @OneToOne
