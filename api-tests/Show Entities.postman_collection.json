@@ -1,0 +1,140 @@
+{
+  "info": {
+    "_postman_id": "b1bd3cbf-3dba-4eaa-b778-7c8271e13d05",
+    "name": "Show Entities",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51781245",
+    "_collection_link": "https://go.postman.co/collection/51781245-b1bd3cbf-3dba-4eaa-b778-7c8271e13d05?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Patients",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/patients",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "patients"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Doctors",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/doctors",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "doctors"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Departments",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/departments",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "departments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Hospital",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/1/hospital",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "1",
+            "hospital"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
