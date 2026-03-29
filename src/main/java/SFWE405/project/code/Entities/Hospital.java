@@ -9,6 +9,8 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Getter
 @Setter
@@ -21,9 +23,10 @@ public class Hospital {
 
     private String name;
     private String address;
-    private int capacity;
-    private int occupancy;
+    private Integer capacity;
+    private Integer occupancy;
 
+    @JsonIgnoreProperties("hospital")
     @OneToMany(mappedBy = "hospital")
     private Set<Department> departments = new HashSet<>();
 
@@ -39,6 +42,10 @@ public class Hospital {
         if(occupancy > 0) {
             occupancy--;
         }
+    }
+
+    public void addDepartment(Department d){
+        departments.add(d);
     }
 
 }
