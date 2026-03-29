@@ -1,0 +1,70 @@
+{
+  "info": {
+    "_postman_id": "907b0fbf-8c2b-4096-a33c-4daf1725fcab",
+    "name": "Test Requirement 3.1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51781245",
+    "_collection_link": "https://go.postman.co/collection/51781245-907b0fbf-8c2b-4096-a33c-4daf1725fcab?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Capacity Met Hospital",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Capacity Met Hospital\",\r\n    \"address\": \"0001 E Small St.\",\r\n    \"capacity\": 10,\r\n    \"occupancy\":10\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/addHospital",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "addHospital"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Capcity Met",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"appointmentDate\": \"2026-05-06\",\r\n    \"reasonForVisit\": \"Yearly Check-up\",\r\n    \"status\": \"Confirmed\",\r\n    \"cost\": 100,\r\n    \"roomNum\": 101,\r\n    \"department\": {\"id\": 1},\r\n    \"doctor\": {\"id\": 1},\r\n    \"patient\": {\"id\": 1},\r\n    \"timeslot\": {\"id\": 1}\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/2/schedule-Appointment",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "2",
+            "schedule-Appointment"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "info": {
+    "_postman_id": "2751b43a-a07b-428c-9bed-6ffe2d043a54",
+    "name": "Test Requirement 3.3",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51781245",
+    "_collection_link": "https://go.postman.co/collection/51781245-2751b43a-a07b-428c-9bed-6ffe2d043a54?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Department Mismatch",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"appointmentDate\": \"2026-05-06\",\r\n    \"reasonForVisit\": \"Knee Surgery\",\r\n    \"status\": \"Confirmed\",\r\n    \"cost\": 100,\r\n    \"roomNum\": 503,\r\n    \"department\": {\"id\": 2},\r\n    \"doctor\": {\"id\": 1},\r\n    \"patient\": {\"id\": 2},\r\n    \"timeslot\": {\"id\": 1}\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/1/schedule-Appointment",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "1",
+            "schedule-Appointment"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

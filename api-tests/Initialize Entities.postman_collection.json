@@ -1,0 +1,635 @@
+{
+  "info": {
+    "_postman_id": "d9bc7089-aab7-4270-a124-c6a3bce22d04",
+    "name": "Initialize Entities",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51781245",
+    "_collection_link": "https://go.postman.co/collection/51781245-d9bc7089-aab7-4270-a124-c6a3bce22d04?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Patient John",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"birthDate\": \"1980-01-01\",\r\n    \"phoneNumber\": \"111111111\",\r\n    \"sex\": \"M\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/addPatient",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "addPatient"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Patient Jane",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"firstName\": \"Jane\",\r\n    \"lastName\": \"Doe\",\r\n    \"birthDate\": \"1981-02-02\",\r\n    \"phoneNumber\": \"222222222\",\r\n    \"sex\": \"F\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/addPatient",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "addPatient"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Patient Joseph",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"firstName\": \"Joseph\",\r\n    \"lastName\": \"Corella\",\r\n    \"birthDate\": \"2005-03-24\",\r\n    \"phoneNumber\": \"5203694455\",\r\n    \"sex\": \"M\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/addPatient",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "addPatient"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Patient Bryn",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"firstName\": \"Bryn\",\r\n    \"lastName\": \"Oneal\",\r\n    \"birthDate\": \"2005-06-19\",\r\n    \"phoneNumber\": \"5097628752\",\r\n    \"sex\": \"F\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/addPatient",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "addPatient"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Patient Charlotte",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"firstName\": \"Charlotte\",\r\n    \"lastName\": \"Montague\",\r\n    \"birthDate\": \"2005-02-14\",\r\n    \"phoneNumber\": \"9288648955\",\r\n    \"sex\": \"F\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/addPatient",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "addPatient"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "UofA Hospital",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"UofA Hospital\",\r\n    \"address\": \"1010 N Example St.\",\r\n    \"capacity\": 100,\r\n    \"occupancy\": 0\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/addHospital",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "addHospital"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "General Medicine Department",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"General Medicine\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/1/addDepartment",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "1",
+            "addDepartment"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Surgery Department",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Surgery\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/1/addDepartment",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "1",
+            "addDepartment"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Maternity Department",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Maternity\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/1/addDepartment",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "1",
+            "addDepartment"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cardiology Department",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Cardiology\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/1/addDepartment",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "1",
+            "addDepartment"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Oncology Department",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Oncology\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/1/addDepartment",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "1",
+            "addDepartment"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Doctor Jones",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Dr. Jones\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/1/addDoctor",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "1",
+            "addDoctor"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Doctor Cerny",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Doctor Cerny\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/2/addDoctor",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "2",
+            "addDoctor"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Doctor White",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Doctor White\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/3/addDoctor",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "3",
+            "addDoctor"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Doctor Romero",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Doctor Romero\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/4/addDoctor",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "4",
+            "addDoctor"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Doctor Matthews",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Doctor Matthews\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/5/addDoctor",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "5",
+            "addDoctor"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Doctor Jone's Schedule",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/1/addSchedule",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "1",
+            "addSchedule"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Doctor Cerny's Schedule",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/2/addSchedule",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "2",
+            "addSchedule"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Doctor White's Schedule",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/3/addSchedule",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "3",
+            "addSchedule"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Doctor Romero's Schedule",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/4/addSchedule",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "4",
+            "addSchedule"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Doctor Matthew's Schedule",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/5/addSchedule",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "5",
+            "addSchedule"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

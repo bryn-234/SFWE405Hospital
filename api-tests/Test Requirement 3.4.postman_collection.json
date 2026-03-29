@@ -1,0 +1,71 @@
+{
+  "info": {
+    "_postman_id": "5cf0b77d-a2fe-48d8-9bd2-8d738da89c34",
+    "name": "Test Requirement 3.4",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51781245",
+    "_collection_link": "https://go.postman.co/collection/51781245-5cf0b77d-a2fe-48d8-9bd2-8d738da89c34?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Taken TimeSlot",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"startTime\": \"2026-05-06T09:30:00\",\r\n    \"endTime\": \"2026-05-06T10:00:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"Available\": false\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/4/addTimeSlot",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "4",
+            "addTimeSlot"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Appointment at Taken Time",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"appointmentDate\": \"2026-05-06\",\r\n    \"reasonForVisit\": \"Caridology Appointment\",\r\n    \"status\": \"Confirmed\",\r\n    \"cost\": 500,\r\n    \"roomNum\": 143,\r\n    \"department\": {\"id\": 4},\r\n    \"doctor\": {\"id\": 4},\r\n    \"patient\": {\"id\": 5},\r\n    \"timeslot\": {\"id\": 2}\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/1/schedule-Appointment",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "1",
+            "schedule-Appointment"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
