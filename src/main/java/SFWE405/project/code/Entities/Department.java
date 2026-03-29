@@ -3,6 +3,8 @@ package SFWE405.project.code.Entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,10 +23,16 @@ public class Department {
 
     private String name;
 
+    @JsonIgnoreProperties("departments")
     @ManyToOne
     @JoinColumn(name = "hospital_id")
     private Hospital hospital;
 
-    @OneToMany(mappedBy = "department")
+    @JsonIgnoreProperties("department")
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
     private Set<Doctor> doctors = new HashSet<>();
+
+    public void addDoctor(Doctor d){
+        doctors.add(d);
+    }
 }
