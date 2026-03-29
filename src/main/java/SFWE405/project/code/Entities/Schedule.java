@@ -3,6 +3,8 @@ package SFWE405.project.code.Entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,14 +21,18 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Boolean isOpen;
-    private String availability;
+    //private Boolean isOpen;
+    //private String availability;
 
-    @OneToMany(mappedBy = "timeSlot")
+    @OneToMany(mappedBy = "schedule")
+    @JsonIgnoreProperties("schedule")
     private Set<TimeSlot> timeSlot = new HashSet<>();
 
     @OneToOne
+    @JsonIgnoreProperties("schedule")
     private Doctor doctor;
 
-    
+    public void addTimeSlot(TimeSlot ts){
+        timeSlot.add(ts);
+    }
 }
