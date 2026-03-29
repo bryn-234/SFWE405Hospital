@@ -17,8 +17,8 @@ import SFWE405.project.code.Entities.Patient;
 import SFWE405.project.code.Entities.Schedule;
 import SFWE405.project.code.Entities.TimeSlot;
 import SFWE405.project.code.Repositories.AppointmentRepository;
-import SFWE405.project.code.Repositories.DepartmentRespository;
-import SFWE405.project.code.Repositories.DoctorRespository;
+import SFWE405.project.code.Repositories.DepartmentRepository;
+import SFWE405.project.code.Repositories.DoctorRepository;
 import SFWE405.project.code.Repositories.HospitalRepository;
 import SFWE405.project.code.Repositories.PatientRepository;
 import SFWE405.project.code.Services.AppointmentService;
@@ -27,13 +27,13 @@ import SFWE405.project.code.Services.HospitalService;
 @RestController
 public class HospitalController {
     @Autowired
-    private DoctorRespository doctorRepo;
+    private DoctorRepository doctorRepo;
 
     @Autowired
     private PatientRepository patientRepo;
 
     @Autowired 
-    private DepartmentRespository departmentRepo;
+    private DepartmentRepository departmentRepo;
 
     @Autowired
     private AppointmentRepository appointmentRepo;
