@@ -22,7 +22,7 @@ import SFWE405.project.code.Entities.Schedule;
 import SFWE405.project.code.Entities.TimeSlot;
 import SFWE405.project.code.Entities.Doctor;
 import SFWE405.project.code.Repositories.AppointmentRepository;
-import SFWE405.project.code.Repositories.DoctorRespository;
+import SFWE405.project.code.Repositories.DoctorRepository;
 import SFWE405.project.code.Repositories.HospitalRepository;
 import SFWE405.project.code.Repositories.TimeSlotRepository;
 
@@ -37,11 +37,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final HospitalRepository hospitalRepository;
-    private final DoctorRespository doctorRepo;
+    private final DoctorRepository doctorRepo;
     private final TimeSlotRepository TimeslotRepo;
 
     public AppointmentService(AppointmentRepository appointmentRepository,
-                              HospitalRepository hospitalRepository, DoctorRespository doctorRepo, TimeSlotRepository TimeslotRepo) {
+                              HospitalRepository hospitalRepository, DoctorRepository doctorRepo, TimeSlotRepository TimeslotRepo) {
         this.appointmentRepository = appointmentRepository;
         this.hospitalRepository = hospitalRepository;
         this.doctorRepo = doctorRepo;
