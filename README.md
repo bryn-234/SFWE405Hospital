@@ -7,7 +7,7 @@ This project is a **Hospital Management System** developed in **Spring Boot** by
 
 ## Project Structure
 
-The application is organized around **7 main entities**, each with its own repository:
+The application is organized around **8 main entities**, each with its own repository:
 
 | Entity            | Description                                                                 |
 |------------------|-----------------------------------------------------------------------------|
