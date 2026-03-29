@@ -8,8 +8,8 @@ import SFWE405.project.code.Entities.Doctor;
 import SFWE405.project.code.Entities.Hospital;
 import SFWE405.project.code.Entities.Schedule;
 import SFWE405.project.code.Entities.TimeSlot;
-import SFWE405.project.code.Repositories.DepartmentRespository;
-import SFWE405.project.code.Repositories.DoctorRespository;
+import SFWE405.project.code.Repositories.DepartmentRepository;
+import SFWE405.project.code.Repositories.DoctorRepository;
 import SFWE405.project.code.Repositories.HospitalRepository;
 import SFWE405.project.code.Repositories.ScheduleRepository;
 import SFWE405.project.code.Repositories.TimeSlotRepository;
@@ -30,10 +30,10 @@ public class HospitalService {
     private HospitalRepository hospitalRepo;
 
     @Autowired
-    private DepartmentRespository departmentRepo;
+    private DepartmentRepository departmentRepo;
 
     @Autowired
-    private DoctorRespository doctorRepo;
+    private DoctorRepository doctorRepo;
 
     @Autowired
     private ScheduleRepository scheduleRepo;
