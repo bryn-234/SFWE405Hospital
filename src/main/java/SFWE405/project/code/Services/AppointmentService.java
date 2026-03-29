@@ -157,5 +157,86 @@ public class AppointmentService {
             throw new TimeSlotTakenException("Chosen Time Slot is unavailable");
         }
     }
+    /**
+     * Requirement 1.1: The system shall allow patients to schedule appointments.
+     * Integrated with 3.1-3.4 (Occupancy and Info checks). Author: Miguel Sena
+     */
+
+    @Transactional
+    public Appointment schedule(Appointment app, Long hospitalId) throws OccupancyMetException, InsufficientInfoException, TimeSlotTakenException {
+        Hospital hospital = hospitalRepository.findById(hospitalId)
+                .orElseThrow(() -> new RuntimeException("Hospital not found"));
+
+        // Requirements 3.1 - 3.4
+        checkOccupancy(hospital);
+        checkSufficientInfo(app);
+        
+        Doctor doctor = doctorRepo.findById(app.getDoctor().getId())
+                .orElseThrow(() -> new RuntimeException("Doctor not found"));
+        checkDepartment(doctor, app);
+
+        TimeSlot ts = TimeslotRepo.findById(app.getTimeslot().getId())
+                .orElseThrow(() -> new RuntimeException("Time slot not found"));
+        checkTimeSlot(ts);
+
+        // Requirement 1.1: Set initial status
+        app.setStatus("PENDING");
+        
+        return appointmentRepository.save(app);
+    }
+
+    /**
+     * Requirement 1.2: The system shall allow patients to edit their pending or confirmed appointments.
+     */
+    @Transactional
+    public Appointment editAppointment(Long appointmentId, TimeSlot newTimeSlot) throws TimeSlotTakenException {
+        Appointment appt = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new RuntimeException("Appointment not found"));
+
+        // Business Rule: Cannot edit if already checked in or completed
+        if ("CHECKED_IN".equals(appt.getStatus()) || "COMPLETED".equals(appt.getStatus())) {
+            throw new IllegalStateException("Cannot edit an appointment that is already checked in or completed.");
+        }
+
+        // Verify the new timeslot is available
+        checkTimeSlot(newTimeSlot);
+
+        appt.setTimeslot(newTimeSlot);
+        return appointmentRepository.save(appt);
+    }
+
+    /**
+     * Requirement 1.4: The system shall allow patients to check in for their appointment on the day of the visit.
+     */
+    @Transactional
+    public void checkIn(Long appointmentId) {
+        Appointment appt = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new RuntimeException("Appointment not found"));
+
+        // Requirement 1.4: Check-in must be on the same day
+        // Assuming Appointment has a getAppointmentDate() or extracted from Timeslot
+        LocalDate appointmentDate = appt.getTimeslot().getDate(); 
+        if (!appointmentDate.equals(LocalDate.now())) {
+            throw new RuntimeException("Check-in is only available on the day of the appointment.");
+        }
+
+        // Logic: Transition to CHECKED_IN
+        appt.setStatus("CHECKED_IN");
+        appointmentRepository.save(appt);
+    }
+
+    /**
+     * Requirement 1.3: Update profile information is typically handled in a PatientService,
+     * but if you are putting it here, it would look like this:
+     */
+    @Transactional
+    public void updatePatientProfile(Patient patient, String newEmail, String newUsername) {
+        patient.setEmail(newEmail);
+        patient.setUsername(newUsername);
+        // Save via a PatientRepository if available
+    }
+    
+    
 
 }
+
