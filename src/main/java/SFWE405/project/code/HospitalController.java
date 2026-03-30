@@ -131,4 +131,10 @@ public class HospitalController {
             @RequestBody MedicalRecordRequest request) {
         return doctorService.updateMedicalRecord(doctorId, patientId, request.getMedicalRecord());
     }
+
+    @GetMapping("/HMS/appointment/{id}/status")
+    public String getAppointmentStatus(@PathVariable Long id) {
+        Appointment a = appointmentRepo.findById(id).orElseThrow(() -> new RuntimeException("Appointment not found"));
+        return a.getStatus();
+    }
 }
