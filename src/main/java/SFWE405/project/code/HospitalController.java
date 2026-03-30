@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import SFWE405.project.code.DTOs.MedicalRecordRequest;
+import SFWE405.project.code.DTOs.MedicationRequest;
 import SFWE405.project.code.Entities.Appointment;
 import SFWE405.project.code.Entities.Department;
 import SFWE405.project.code.Entities.Doctor;
@@ -22,6 +24,7 @@ import SFWE405.project.code.Repositories.DoctorRepository;
 import SFWE405.project.code.Repositories.HospitalRepository;
 import SFWE405.project.code.Repositories.PatientRepository;
 import SFWE405.project.code.Services.AppointmentService;
+import SFWE405.project.code.Services.DoctorService;
 import SFWE405.project.code.Services.HospitalService;
 
 @RestController
@@ -46,6 +49,9 @@ public class HospitalController {
 
     @Autowired
     private HospitalService hospitalService;
+
+    @Autowired
+    private DoctorService doctorService;
 
     @GetMapping("/HMS/patients")
     public List<Patient> showPatients(){
@@ -107,5 +113,22 @@ public class HospitalController {
     public Appointment editAppointment(@PathVariable Long id, @RequestBody Appointment a){
         appointmentService.updateAppointmentStatus(id, a.getStatus());
         return appointmentRepo.save(a);
+    }
+
+    @PostMapping("/HMS/{doctorId}/{patientId}/prescribeMedication")
+    public Patient prescribeMedication(@PathVariable Long doctorId, @PathVariable Long patientId,
+            @RequestBody MedicationRequest request) {
+        return doctorService.prescribeMedication(doctorId, patientId, request.getMedication());
+    }
+
+    @GetMapping("/HMS/{doctorId}/{patientId}/medicalRecord")
+    public String readMedicalRecord(@PathVariable Long doctorId, @PathVariable Long patientId) {
+        return doctorService.readMedicalRecord(doctorId, patientId);
+    }
+
+    @PostMapping("/HMS/{doctorId}/{patientId}/updateMedicalRecord")
+    public Patient updateMedicalRecord(@PathVariable Long doctorId, @PathVariable Long patientId,
+            @RequestBody MedicalRecordRequest request) {
+        return doctorService.updateMedicalRecord(doctorId, patientId, request.getMedicalRecord());
     }
 }
