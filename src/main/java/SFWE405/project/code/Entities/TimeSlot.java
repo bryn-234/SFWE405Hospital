@@ -1,6 +1,9 @@
 package SFWE405.project.code.Entities;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,9 +24,18 @@ public class TimeSlot {
     
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private LocalDateTime duration;
+    private LocalTime duration;
+    private Boolean Available;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
+
+    @OneToOne(mappedBy = "timeslot")
+    @JsonIgnoreProperties("timeslot")
+    private Appointment appointment;
 }

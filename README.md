@@ -1,13 +1,13 @@
 # Hospital Management System
 
 ## Overview
-This project is a **Hospital Management System** developed in **Spring Boot** by a team of 5 undergraduate students. The goal of the project is to provide a structured and easy-to-use system for managing hospital operations. We are currently in the process of completing this project. The system models a hospital environment with multiple interconnected entities, providing RESTful APIs to manage appointments, doctors, patients, departments, insurance, and medical records. Endpoints are tested using **Postman**.
+This project is a **Hospital Management System** developed in **Spring Boot** by a team of 5 undergraduate students. The goal of the project is to provide a structured and easy-to-use system for scheduling an appointment at a hospital. We are currently in the process of completing this project. The system models a hospital environment with multiple interconnected entities, providing RESTful APIs to manage appointments, doctors, patients, departments, profiles, schedules, and time slots. Endpoints are tested using **Postman**.
 
 ---
 
 ## Project Structure
 
-The application is organized around **7 main entities**, each with its own repository:
+The application is organized around **8 main entities**, each with its own repository:
 
 | Entity            | Description                                                                 |
 |------------------|-----------------------------------------------------------------------------|
@@ -16,8 +16,9 @@ The application is organized around **7 main entities**, each with its own repos
 | **Doctor**        | Represents doctors working in the hospital, linked to a department.       |
 | **Patient**       | Represents patients registered in the hospital.                            |
 | **Appointment**   | Represents appointments between patients and doctors.                     |
-| **Medical Record**| Stores patient medical history and relevant health information.            |
-| **Insurance**     | Represents patient insurance information and coverage details.            |
+| **Schedule**      | Repersents the doctor's schedule that a patient can look at to make an appointment.            |
+| **TimeSlot**      | Represents a section of the doctor's schedule that a patient can choose to have their appointment.            |
+| **Profile**       | Represents patient or doctor's account to the system.            |
 
 Each entity has a corresponding **Spring Data JPA repository** to manage database operations.
 
@@ -42,12 +43,12 @@ Each entity has a corresponding **Spring Data JPA repository** to manage databas
 ## Project Status
 
   This system is currently under development. At this stage, the project includes: 
-  - The 7 main entities: Hosptial, Department, Doctor, Patient, Appointment, Medical Record, Insurance
+  - The 8 main entities: Hosptial, Department, Doctor, Patient, Appointment, Profile, Schedule, & TimeSlot
   - Repositories for each entity
   - A HospitalController to handle API requests
+  - A AppointmentService to handle all Appointment related business logic
+  - A HospitalService to handle initializing of entities for Postman testing and hospital related business logic
+  - A Postman workplace for testing requirements
  
 Planned future enhancements include:
-  - Implementing a Service layer for business logic
-  - Adding more controllers for other entities
-  - Developing a presentation layer for users
-  - Implementing Postman workspace
+  - Developing a Presentation layer (user interfaces for Doctor and Patient entities)
