@@ -27,8 +27,8 @@ public class Doctor {
     private Set<Appointment> appointments = new HashSet<>();
     
     @JsonIgnoreProperties("doctors")
-    @ManyToOne
-    @JoinColumn(name = "department_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 
     @OneToOne
