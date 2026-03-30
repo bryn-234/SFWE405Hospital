@@ -26,6 +26,10 @@ public class Patient {
     private LocalDate birthDate;
     private String phoneNumber;
     private String sex;
+    @Lob
+    private String medicalRecord;
+    @Lob
+    private String prescribedMedications;
     
     @OneToMany(mappedBy = "patient")
     private Set<Appointment> appointments = new HashSet<>();
