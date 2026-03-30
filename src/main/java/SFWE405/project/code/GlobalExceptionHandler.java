@@ -20,6 +20,18 @@ public class GlobalExceptionHandler {
     return ex.getMessage();
   }
 
+  @ExceptionHandler(IllegalArgumentException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  String IllegalArgumentExceptionHandler(IllegalArgumentException ex) {
+    return ex.getMessage();
+  }
+
+  @ExceptionHandler(IllegalStateException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  String IllegalStateExceptionHandler(IllegalStateException ex) {
+    return ex.getMessage();
+  }
+
   @ExceptionHandler(InsufficientInfoException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   String InsufficientInfoExceptionHandler(InsufficientInfoException ex) {
