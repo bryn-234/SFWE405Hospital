@@ -27,10 +27,6 @@ public class TimeSlot {
     private LocalTime duration;
     private Boolean Available;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @ManyToOne
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
