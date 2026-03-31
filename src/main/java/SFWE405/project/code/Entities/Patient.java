@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Getter
 @Setter
@@ -32,6 +34,7 @@ public class Patient {
     private String prescribedMedications;
     
     @OneToMany(mappedBy = "patient")
+    @JsonIgnore
     private Set<Appointment> appointments = new HashSet<>();
 
 

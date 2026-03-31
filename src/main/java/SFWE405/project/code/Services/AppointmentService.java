@@ -9,7 +9,6 @@
  *  Author: Bryn Neal
  */
 
-
 package SFWE405.project.code.Services;
 
 import SFWE405.project.code.Entities.*;
@@ -29,6 +28,8 @@ import java.util.InputMismatchException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class AppointmentService {
@@ -116,11 +117,11 @@ public class AppointmentService {
      * @throws TimeSlotTakenException if the time slot chosen has been taken
      * Author: Charlotte Montague
      */
+     
     /**
      * Requirement 1.1: The system shall allow patients to schedule appointments.
      * Integrated with 3.1-3.4 (Occupancy and Info checks). Author: Miguel Sena
      */
-
     @Transactional
     public Appointment schedule(Appointment app, Long hospitalId)
             throws OccupancyMetException, InsufficientInfoException, TimeSlotTakenException {
@@ -166,7 +167,9 @@ public class AppointmentService {
         app.setTimeslot(ts);
 
         // Requirement 1.1 / initial scheduling state
-        app.setStatus("REQUESTED");
+        app.setStatus("PENDING");
+        ts.setAvailable(false); 
+        TimeslotRepo.save(ts);
 
         return appointmentRepository.save(app);
     }
@@ -229,7 +232,7 @@ public class AppointmentService {
 
         // Requirement 1.4: Check-in must be on the same day
         // Assuming Appointment has a getAppointmentDate() or extracted from Timeslot
-        LocalDate appointmentDate = appt.getTimeslot().getStartTime().toLocalDate();
+        LocalDate appointmentDate = appt.getTimeslot().getStartTime().toLocalDate(); 
         if (!appointmentDate.equals(LocalDate.now())) {
             throw new RuntimeException("Check-in is only available on the day of the appointment.");
         }
@@ -244,21 +247,43 @@ public class AppointmentService {
      * but if you are putting it here, it would look like this:
      */
 
-    /** I don't think we need this anymore since we have a profileService
+    /* I don't think we need this anymore since we have a profileService
      * with a function very similar to this
      *
 
     @Transactional
-    public void updatePatientProfile(Patient patient, String newEmail, String newUsername) {
-        patient.setEmail(newEmail);
-        patient.setUsername(newUsername);
+    public void updatePatientProfile(Profile profile, String newEmail, String newUsername) {
+        profile.setEmail(newEmail);
+        profile.setUsername(newUsername);
         // Save via a PatientRepository if available
     }
     */
+    
+    /**
+     * Requirement 4.2: Allow doctors to create/delete new available time slots (DOCTORS ONLY SINCE NO STAFF)
+     */
+    @Transactional
+    public TimeSlot addAvailableSlot(TimeSlot slot) {
+        slot.setAvailable(true);
+        return TimeslotRepo.save(slot);
+    } //create new time slots
 
+    @Transactional
+    public void removeAvailableSlot(Long slotId) {
+        TimeSlot ts = TimeslotRepo.findById(slotId)
+                .orElseThrow(() -> new RuntimeException("Time slot not found"));
+        if (!ts.getAvailable()) {
+            throw new IllegalStateException("This slot is already booked. Cancel the appointment before deleting the slot.");
+        }
 
+        TimeslotRepo.delete(ts);
+    } //delete time slots
 
-
+    /**
+    * Requirement 4.3: a real-time view of available vs. booked slots for the Hospital Side interface
+    */
+    public List<TimeSlot> getAllSlots() {
+        return TimeslotRepo.findAll();
+    } //return all slots
 
 }
-

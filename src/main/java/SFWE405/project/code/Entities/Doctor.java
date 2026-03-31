@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class Doctor {
     private String name;
 
     @OneToMany(mappedBy = "doctor")
+    @JsonIgnore
     private Set<Appointment> appointments = new HashSet<>();
     
     @JsonIgnoreProperties("doctors")
@@ -33,5 +35,6 @@ public class Doctor {
 
     @OneToOne
     @JsonIgnoreProperties("doctor")
+    @JsonIgnore // <--- Add this! 
     private Schedule schedule;
 }
