@@ -132,6 +132,17 @@ public class HospitalController {
         return doctorService.updateMedicalRecord(doctorId, patientId, request.getMedicalRecord());
     }
 
+    @GetMapping("/HMS/{doctorId}/availability")
+    public List<TimeSlot> getDoctorAvailability(@PathVariable Long doctorId) {
+        Doctor doctor = doctorRepo.findById(doctorId).orElseThrow(() -> new RuntimeException("Doctor not found");
+
+        if (doctor.getSchedule() == null) {
+            throw new RuntimeException("Doctor has no schedule");
+        }
+
+        return doctor.getSchedule().getTimeSlot().stream().toList();
+    }
+
     @GetMapping("/HMS/appointment/{id}/status")
     public String getAppointmentStatus(@PathVariable Long id) {
         Appointment a = appointmentRepo.findById(id).orElseThrow(() -> new RuntimeException("Appointment not found"));

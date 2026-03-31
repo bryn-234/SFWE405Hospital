@@ -76,6 +76,13 @@ public class AppointmentService {
         // Increment hospital occupancy when appointment is CONFIRMED
         if (!"CONFIRMED".equals(oldStatus) && "CONFIRMED".equals(newStatus)) {
             hospital.incrementOccupancy();
+
+            // Implement Requirement 3.5
+            // Close timeslot when appointment is CONFIRMED
+            TimeSlot ts = appointment.getTimeslot();
+            if (ts != null) {
+                ts.setAvailable(false);
+            }
         }
 
         // Requirement 7.2
