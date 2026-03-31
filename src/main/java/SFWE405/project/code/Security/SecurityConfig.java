@@ -2,11 +2,13 @@ package SFWE405.project.code.Security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.Customizer;
 
 /**
  * 
@@ -41,7 +43,14 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/register", "/h2-console/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/slots").hasAnyAuthority("DOCTOR")
+                        .requestMatchers(HttpMethod.DELETE, "/slots/**").hasAnyAuthority("DOCTOR")
                         .anyRequest().authenticated()
+                )
+                .httpBasic(Customizer.withDefaults()) 
+                .userDetailsService(profileDetailsService)
+                .formLogin(form -> form
+                .defaultSuccessUrl("/home", true)
                 )
                 .userDetailsService(profileDetailsService)
                 .formLogin(form -> form

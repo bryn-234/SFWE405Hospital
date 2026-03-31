@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -20,6 +21,7 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate appointmentDate;
     private String reasonForVisit;
     private String status;

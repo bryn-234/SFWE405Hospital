@@ -42,19 +42,17 @@ public class ProfileDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         
-        // Find the profile by username
+        
         Profile profile = profileRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        // Assign a role to the profile
-        String role = profile.getDoctor() != null ? "DOCTOR" :
-                      profile.getPatient() != null ? "PATIENT" :
-                      "USER";
+        
+        String databaseRole = profile.getRole();
 
-        // Build the profile with correct attributes
+        
         return User.withUsername(profile.getUsername())
                 .password(profile.getPassword())
-                .roles(role)
+                .authorities(databaseRole)
                 .build();
     }
 }

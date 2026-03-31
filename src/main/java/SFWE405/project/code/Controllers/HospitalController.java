@@ -1,8 +1,10 @@
-package SFWE405.project.code;
+package SFWE405.project.code.Controllers;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +28,10 @@ import SFWE405.project.code.Repositories.PatientRepository;
 import SFWE405.project.code.Services.AppointmentService;
 import SFWE405.project.code.Services.DoctorService;
 import SFWE405.project.code.Services.HospitalService;
+
+import SFWE405.project.code.InsufficientInfoException;
+import SFWE405.project.code.OccupancyMetException;
+import SFWE405.project.code.TimeSlotTakenException;
 
 @RestController
 public class HospitalController {
@@ -131,4 +137,21 @@ public class HospitalController {
             @RequestBody MedicalRecordRequest request) {
         return doctorService.updateMedicalRecord(doctorId, patientId, request.getMedicalRecord());
     }
+
+    @PostMapping("/slots")
+    public TimeSlot createSlot(@RequestBody TimeSlot slot) {
+        return appointmentService.addAvailableSlot(slot);
+    }
+
+    @DeleteMapping("/slots/{id}")
+    public ResponseEntity<String> deleteSlot(@PathVariable Long id) {
+        appointmentService.removeAvailableSlot(id);
+        return ResponseEntity.ok("Time slot deleted successfully.");
+    }
+
+    @GetMapping("/slots")
+    public List<TimeSlot> viewAllSlots() {
+        return appointmentService.getAllSlots();
+    }
+
 }

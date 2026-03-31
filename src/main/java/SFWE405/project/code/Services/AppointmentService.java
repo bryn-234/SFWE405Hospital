@@ -18,6 +18,7 @@ import SFWE405.project.code.TimeSlotTakenException;
 import SFWE405.project.code.Entities.Appointment;
 import SFWE405.project.code.Entities.Hospital;
 import SFWE405.project.code.Entities.Patient;
+import SFWE405.project.code.Entities.Profile;
 import SFWE405.project.code.Entities.Schedule;
 import SFWE405.project.code.Entities.TimeSlot;
 import SFWE405.project.code.Entities.Doctor;
@@ -32,6 +33,8 @@ import java.util.InputMismatchException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class AppointmentService {
@@ -105,30 +108,6 @@ public class AppointmentService {
      * Author: Charlotte Montague
      */
     
-    @Transactional
-    public Appointment schedule(Appointment app, Long id) throws OccupancyMetException, InsufficientInfoException, TimeSlotTakenException{
-        Hospital hospital = hospitalRepository.findById(id).orElseThrow(() -> new RuntimeException("Hospital not found"));
-
-        //Implement Requirement 3.1
-        //The system shall reject an appointment request if the Hospital occupancy has reached its maximum capacity.
-        checkOccupancy(hospital);
-
-        //Implement Requirement 3.2
-        //The system shall not allow an appointment to be created without a specified doctor, patient, and department.
-        checkSufficientInfo(app);
-
-        //Implement Requirement 3.3
-        //The system shall only allow an appointment to be made with a doctor belonging to the department specified by the patient.
-        Doctor doctor = doctorRepo.findById(app.getDoctor().getId()).orElseThrow(() -> new RuntimeException("Doctor not found"));
-        checkDepartment(doctor, app);
-
-        //Implement Requirement 3.4
-        //The system shall prevent an appointment from being scheduled if the selected time slot in the Schedule is not marked as "Open."
-        TimeSlot ts = TimeslotRepo.findById(app.getTimeslot().getId()).orElseThrow(() -> new RuntimeException("Time slot not found"));
-        checkTimeSlot(ts);
-
-        return appointmentRepository.save(app);
-    } 
 
     //checks if the Hospitals Occupancy is equal to its capacity
     public void checkOccupancy(Hospital hospital) throws OccupancyMetException{
@@ -179,6 +158,9 @@ public class AppointmentService {
                 .orElseThrow(() -> new RuntimeException("Time slot not found"));
         checkTimeSlot(ts);
 
+        ts.setAvailable(false); //mark the slot as booked
+        TimeslotRepo.save(ts);   //save the status change to the database
+
         // Requirement 1.1: Set initial status
         app.setStatus("PENDING");
         
@@ -215,7 +197,7 @@ public class AppointmentService {
 
         // Requirement 1.4: Check-in must be on the same day
         // Assuming Appointment has a getAppointmentDate() or extracted from Timeslot
-        LocalDate appointmentDate = appt.getTimeslot().getDate(); 
+        LocalDate appointmentDate = appt.getTimeslot().getStartTime().toLocalDate(); 
         if (!appointmentDate.equals(LocalDate.now())) {
             throw new RuntimeException("Check-in is only available on the day of the appointment.");
         }
@@ -230,13 +212,38 @@ public class AppointmentService {
      * but if you are putting it here, it would look like this:
      */
     @Transactional
-    public void updatePatientProfile(Patient patient, String newEmail, String newUsername) {
-        patient.setEmail(newEmail);
-        patient.setUsername(newUsername);
+    public void updatePatientProfile(Profile profile, String newEmail, String newUsername) {
+        profile.setEmail(newEmail);
+        profile.setUsername(newUsername);
         // Save via a PatientRepository if available
     }
     
-    
+    /**
+     * Requirement 4.2: Allow doctors to create/delete new available time slots (DOCTORS ONLY SINCE NO STAFF)
+     */
+    @Transactional
+    public TimeSlot addAvailableSlot(TimeSlot slot) {
+        slot.setAvailable(true);
+        return TimeslotRepo.save(slot);
+    } //create new time slots
+
+    @Transactional
+    public void removeAvailableSlot(Long slotId) {
+        TimeSlot ts = TimeslotRepo.findById(slotId)
+                .orElseThrow(() -> new RuntimeException("Time slot not found"));
+        if (!ts.getAvailable()) {
+            throw new IllegalStateException("This slot is already booked. Cancel the appointment before deleting the slot.");
+        }
+
+        TimeslotRepo.delete(ts);
+    } //delete time slots
+
+    /**
+    * Requirement 4.3: a real-time view of available vs. booked slots for the Hospital Side interface
+    */
+    public List<TimeSlot> getAllSlots() {
+        return TimeslotRepo.findAll();
+    } //return all available slots
 
 }
 
