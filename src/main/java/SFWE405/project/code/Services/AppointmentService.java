@@ -125,15 +125,20 @@ public class AppointmentService {
     public Appointment schedule(Appointment app, Long hospitalId)
             throws OccupancyMetException, InsufficientInfoException, TimeSlotTakenException {
 
+        //Implement Requirement 3.1
+        //The system shall reject an appointment request if the Hospital occupancy has reached its maximum capacity.
         Hospital hospital = hospitalRepository.findById(hospitalId)
                 .orElseThrow(() -> new RuntimeException("Hospital not found"));
 
         // Requirement 3.1
         checkOccupancy(hospital);
 
-        // Requirement 3.2
+        //Implement Requirement 3.2
+        //The system shall not allow an appointment to be created without a specified doctor, patient, and department.
         checkSufficientInfo(app);
 
+        //Implement Requirement 3.3
+        //The system shall only allow an appointment to be made with a doctor belonging to the department specified by the patient.
         // Fetch real entities from DB
         Doctor doctor = doctorRepo.findById(app.getDoctor().getId())
                 .orElseThrow(() -> new RuntimeException("Doctor not found"));
@@ -148,11 +153,10 @@ public class AppointmentService {
                 .orElseThrow(() -> new RuntimeException("Time slot not found"));
 
         // Requirement 3.3
-        if (!doctor.getDepartment().getId().equals(department.getId())) {
-            throw new InputMismatchException("Chosen doctor's department doesn't match the one selected.");
-        }
+        checkDepartment(doctor, app);
 
-        // Requirement 3.4
+        //Implement Requirement 3.4
+        //The system shall prevent an appointment from being scheduled if the selected time slot in the Schedule is not marked as "Open."
         checkTimeSlot(ts);
 
         // Set fully loaded entities onto appointment
