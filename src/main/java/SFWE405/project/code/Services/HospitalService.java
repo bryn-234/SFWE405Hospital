@@ -3,6 +3,7 @@ package SFWE405.project.code.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import SFWE405.project.code.DTOs.HospitalOccupancyDTO;
 import SFWE405.project.code.Entities.Department;
 import SFWE405.project.code.Entities.Doctor;
 import SFWE405.project.code.Entities.Hospital;
@@ -67,6 +68,17 @@ public class HospitalService {
         t.setSchedule(s);
         s.addTimeSlot(t);
         return timeslotRepo.save(t);
+    }
+
+    public HospitalOccupancyDTO getHospitalOccupancy(Long id) {
+        Hospital hospital = hospitalRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Hospital not found"));
+
+        return new HospitalOccupancyDTO(
+                hospital.getName(),
+                hospital.getOccupancy() != null ? hospital.getOccupancy() : 0,
+                hospital.getCapacity() != null ? hospital.getCapacity() : 0
+        );
     }
 
 }

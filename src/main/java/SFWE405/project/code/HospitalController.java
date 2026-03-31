@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import SFWE405.project.code.DTOs.HospitalOccupancyDTO;
 import SFWE405.project.code.Entities.Appointment;
 import SFWE405.project.code.Entities.Department;
 import SFWE405.project.code.Entities.Doctor;
@@ -68,10 +69,9 @@ public class HospitalController {
     }
 
     @GetMapping("/HMS/departments")
-    public List<Department> getDerpartments(){
+    public List<Department> getDepartments(){
         return (List<Department>) departmentRepo.findAll();
     }
-
     @PostMapping("/HMS/{id}/addDepartment")
     public void addDepartment(@PathVariable Long id, @RequestBody Department d){
         hospitalService.addDepartment(d, id);
@@ -98,14 +98,19 @@ public class HospitalController {
     }
 
     @PostMapping("/HMS/{id}/schedule-Appointment")
-    public Appointment scheduleAppointment(@PathVariable Long id, @RequestBody Appointment a) throws OccupancyMetException, InsufficientInfoException, TimeSlotTakenException{
-        appointmentService.schedule(a, id);
-        return appointmentRepo.save(a);
+    public Appointment scheduleAppointment(@PathVariable Long id, @RequestBody Appointment a)
+            throws OccupancyMetException, InsufficientInfoException, TimeSlotTakenException {
+        return appointmentService.schedule(a, id);
     }
 
     @PostMapping("/HMS/{id}/edit-Appointment")
-    public Appointment editAppointment(@PathVariable Long id, @RequestBody Appointment a){
-        appointmentService.updateAppointmentStatus(id, a.getStatus());
-        return appointmentRepo.save(a);
+    public Appointment editAppointment(@PathVariable Long id, @RequestBody Appointment a) throws OccupancyMetException {
+        return appointmentService.updateAppointmentStatus(id, a.getStatus());
+    }
+
+    // Implements requirement 7.4
+    @GetMapping("/HMS/{id}/occupancy")
+    public HospitalOccupancyDTO getHospitalOccupancy(@PathVariable Long id) {
+        return hospitalService.getHospitalOccupancy(id);
     }
 }

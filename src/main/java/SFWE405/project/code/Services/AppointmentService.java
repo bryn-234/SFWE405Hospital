@@ -12,15 +12,12 @@
 
 package SFWE405.project.code.Services;
 
+import SFWE405.project.code.Entities.*;
 import SFWE405.project.code.InsufficientInfoException;
 import SFWE405.project.code.OccupancyMetException;
 import SFWE405.project.code.TimeSlotTakenException;
-import SFWE405.project.code.Entities.Appointment;
-import SFWE405.project.code.Entities.Hospital;
-import SFWE405.project.code.Entities.Patient;
-import SFWE405.project.code.Entities.Schedule;
-import SFWE405.project.code.Entities.TimeSlot;
-import SFWE405.project.code.Entities.Doctor;
+import SFWE405.project.code.Repositories.PatientRepository;
+import SFWE405.project.code.Repositories.DepartmentRepository;
 import SFWE405.project.code.Repositories.AppointmentRepository;
 import SFWE405.project.code.Repositories.DoctorRepository;
 import SFWE405.project.code.Repositories.HospitalRepository;
@@ -39,13 +36,20 @@ public class AppointmentService {
     private final HospitalRepository hospitalRepository;
     private final DoctorRepository doctorRepo;
     private final TimeSlotRepository TimeslotRepo;
+    private final PatientRepository patientRepo;
+    private final DepartmentRepository departmentRepo;
+
 
     public AppointmentService(AppointmentRepository appointmentRepository,
-                              HospitalRepository hospitalRepository, DoctorRepository doctorRepo, TimeSlotRepository TimeslotRepo) {
+                              HospitalRepository hospitalRepository, DoctorRepository doctorRepo, TimeSlotRepository TimeslotRepo,
+                              PatientRepository patientRepo, DepartmentRepository departmentRepo
+                              ) {
         this.appointmentRepository = appointmentRepository;
         this.hospitalRepository = hospitalRepository;
         this.doctorRepo = doctorRepo;
         this.TimeslotRepo = TimeslotRepo;
+        this.patientRepo = patientRepo;
+        this.departmentRepo = departmentRepo;
     }
 
     /**
@@ -61,7 +65,7 @@ public class AppointmentService {
      * @throws RuntimeException if the appointment or hospital is not found
      */
     @Transactional
-    public Appointment updateAppointmentStatus(Long appointmentId, String newStatus) {
+    public Appointment updateAppointmentStatus(Long appointmentId, String newStatus) throws OccupancyMetException {
 
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
@@ -75,6 +79,7 @@ public class AppointmentService {
         // Implement Requirement 7.1
         // Increment hospital occupancy when appointment is CONFIRMED
         if (!"CONFIRMED".equals(oldStatus) && "CONFIRMED".equals(newStatus)) {
+            checkOccupancy(hospital);
             hospital.incrementOccupancy();
         }
 
@@ -91,7 +96,7 @@ public class AppointmentService {
     }
 
     /**
-     * Checks that an Appointment mets the criteria before sceduling it.
+     * Checks that an Appointment mets the criteria before scheduling it.
      *
      * This method enforces the following requirements:
      * 3.1: The system shall reject an appointment request if the Hospital occupancy has reached its maximum capacity.
@@ -120,20 +125,36 @@ public class AppointmentService {
         //Implement Requirement 3.3
         //The system shall only allow an appointment to be made with a doctor belonging to the department specified by the patient.
         Doctor doctor = doctorRepo.findById(app.getDoctor().getId()).orElseThrow(() -> new RuntimeException("Doctor not found"));
+
+        Patient patient = patientRepo.findById(app.getPatient().getId())
+                .orElseThrow(() -> new RuntimeException("Patient not found"));
+
+        Department department = departmentRepo.findById(app.getDepartment().getId())
+                .orElseThrow(() -> new RuntimeException("Department not found"));
+
+        TimeSlot ts = TimeslotRepo.findById(app.getTimeslot().getId())
+                .orElseThrow(() -> new RuntimeException("Time slot not found"));
+
+        // requirement 3.3
         checkDepartment(doctor, app);
 
         //Implement Requirement 3.4
         //The system shall prevent an appointment from being scheduled if the selected time slot in the Schedule is not marked as "Open."
-        TimeSlot ts = TimeslotRepo.findById(app.getTimeslot().getId()).orElseThrow(() -> new RuntimeException("Time slot not found"));
         checkTimeSlot(ts);
+
+        // Set the fully loaded entities onto the appointment
+        app.setDoctor(doctor);
+        app.setPatient(patient);
+        app.setDepartment(department);
+        app.setTimeslot(ts);
 
         return appointmentRepository.save(app);
     } 
 
     //checks if the Hospitals Occupancy is equal to its capacity
     public void checkOccupancy(Hospital hospital) throws OccupancyMetException{
-        if(hospital.getOccupancy() == hospital.getCapacity()){
-            throw new OccupancyMetException("Hospital Occupency Met");
+        if(hospital.getOccupancy().equals(hospital.getCapacity())){
+            throw new OccupancyMetException("Hospital Occupancy Met");
         }
     }
 

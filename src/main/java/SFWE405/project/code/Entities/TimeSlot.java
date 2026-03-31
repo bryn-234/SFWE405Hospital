@@ -20,7 +20,7 @@ public class TimeSlot {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private LocalTime duration;
-    private Boolean Available;
+    private Boolean available;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

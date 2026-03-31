@@ -28,20 +28,23 @@ public class Appointment {
 
     @ManyToOne
     @JoinColumn(name = "doctor_id")
+    @JsonIgnoreProperties({"appointments", "department", "schedule"})
     private Doctor doctor;
 
     //Need this for requirements 3.2 and 3.3
     @ManyToOne
     @JoinColumn(name = "department_id")
+    @JsonIgnoreProperties({"doctors", "hospital"})
     private Department department;
 
     @ManyToOne
     @JoinColumn(name = "patient_id")
+    @JsonIgnoreProperties({"appointments"})
     private Patient patient; 
 
     //Needed for requirement 3.4
     @OneToOne
     @JoinColumn(name = "timeslot_id")
-    @JsonIgnoreProperties("appointment")
+    @JsonIgnoreProperties({"appointment", "schedule"})
     private TimeSlot timeslot;
 }

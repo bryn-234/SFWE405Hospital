@@ -1,127 +1,19 @@
 {
   "info": {
-    "_postman_id": "9a646cb0-a51d-41aa-9627-7239153df349",
-    "name": "Show Entities",
+    "_postman_id": "2972b358-9438-48c0-ae2a-5959487f1fa9",
+    "name": "Test Requirement 7.4",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "51639999",
-    "_collection_link": "https://go.postman.co/collection/51639999-9a646cb0-a51d-41aa-9627-7239153df349?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/51639999-2972b358-9438-48c0-ae2a-5959487f1fa9?source=collection_link"
   },
   "item": [
     {
-      "name": "Patients",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
+      "name": "get initial occupancy and capacity",
       "request": {
         "method": "GET",
         "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
         "url": {
-          "raw": "http://localhost:8080/HMS/patients",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "HMS",
-            "patients"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Doctors",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "GET",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/HMS/doctors",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "HMS",
-            "doctors"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Departments",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "GET",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/HMS/departments",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "HMS",
-            "departments"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Hospital",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "GET",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/HMS/1/hospital",
+          "raw": "http://localhost:8080/HMS/1/occupancy",
           "protocol": "http",
           "host": [
             "localhost"
@@ -130,7 +22,88 @@
           "path": [
             "HMS",
             "1",
-            "hospital"
+            "occupancy"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "patient request to scheduleAppointment",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"appointmentDate\": \"2026-04-01\",\r\n  \"reasonForVisit\": \"Checkup\",\r\n  \"status\": \"REQUESTED\",\r\n  \"cost\": 100,\r\n  \"roomNum\": 101,\r\n  \"doctor\": {\r\n    \"id\": 1\r\n  },\r\n  \"patient\": {\r\n    \"id\": 1\r\n  },\r\n  \"department\": {\r\n    \"id\": 1\r\n  },\r\n  \"timeslot\": {\r\n    \"id\": 1\r\n  }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/1/schedule-Appointment",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "1",
+            "schedule-Appointment"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "confirm appointment",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"status\": \"CONFIRMED\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/HMS/1/edit-Appointment",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "1",
+            "edit-Appointment"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "check new occupancy and capacity",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/HMS/1/occupancy",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "HMS",
+            "1",
+            "occupancy"
           ]
         }
       },
