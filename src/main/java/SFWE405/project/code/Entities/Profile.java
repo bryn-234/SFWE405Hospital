@@ -16,8 +16,13 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String username;
+
+    @Column(unique = true)
     private String email;
+    
+    private String role; // "DOCTOR" or "PATIENT"
     private String password;
 
     @OneToOne

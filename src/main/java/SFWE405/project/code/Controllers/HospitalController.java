@@ -1,4 +1,4 @@
-package SFWE405.project.code;
+package SFWE405.project.code.Controllers;
 
 import java.util.List;
 
@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import SFWE405.project.code.DTOs.HospitalOccupancyDTO;
+import SFWE405.project.code.TimeSlotTakenException;
+import SFWE405.project.code.InsufficientInfoException;
+import SFWE405.project.code.OccupancyMetException;
+import SFWE405.project.code.DTOs.MedicalRecordRequest;
+import SFWE405.project.code.DTOs.MedicationRequest;
 import SFWE405.project.code.Entities.Appointment;
 import SFWE405.project.code.Entities.Department;
 import SFWE405.project.code.Entities.Doctor;
@@ -23,6 +28,7 @@ import SFWE405.project.code.Repositories.DoctorRepository;
 import SFWE405.project.code.Repositories.HospitalRepository;
 import SFWE405.project.code.Repositories.PatientRepository;
 import SFWE405.project.code.Services.AppointmentService;
+import SFWE405.project.code.Services.DoctorService;
 import SFWE405.project.code.Services.HospitalService;
 
 @RestController
@@ -48,6 +54,9 @@ public class HospitalController {
     @Autowired
     private HospitalService hospitalService;
 
+    @Autowired
+    private DoctorService doctorService;
+
     @GetMapping("/HMS/patients")
     public List<Patient> showPatients(){
         return patientRepo.findAll();
@@ -72,6 +81,7 @@ public class HospitalController {
     public List<Department> getDepartments(){
         return (List<Department>) departmentRepo.findAll();
     }
+
     @PostMapping("/HMS/{id}/addDepartment")
     public void addDepartment(@PathVariable Long id, @RequestBody Department d){
         hospitalService.addDepartment(d, id);
@@ -112,5 +122,39 @@ public class HospitalController {
     @GetMapping("/HMS/{id}/occupancy")
     public HospitalOccupancyDTO getHospitalOccupancy(@PathVariable Long id) {
         return hospitalService.getHospitalOccupancy(id);
+    }
+
+    @PostMapping("/HMS/{doctorId}/{patientId}/prescribeMedication")
+    public Patient prescribeMedication(@PathVariable Long doctorId, @PathVariable Long patientId,
+            @RequestBody MedicationRequest request) {
+        return doctorService.prescribeMedication(doctorId, patientId, request.getMedication());
+    }
+
+    @GetMapping("/HMS/{doctorId}/{patientId}/medicalRecord")
+    public String readMedicalRecord(@PathVariable Long doctorId, @PathVariable Long patientId) {
+        return doctorService.readMedicalRecord(doctorId, patientId);
+    }
+
+    @PostMapping("/HMS/{doctorId}/{patientId}/updateMedicalRecord")
+    public Patient updateMedicalRecord(@PathVariable Long doctorId, @PathVariable Long patientId,
+            @RequestBody MedicalRecordRequest request) {
+        return doctorService.updateMedicalRecord(doctorId, patientId, request.getMedicalRecord());
+    }
+
+    @GetMapping("/HMS/{doctorId}/availability")
+    public List<TimeSlot> getDoctorAvailability(@PathVariable Long doctorId) {
+        Doctor doctor = doctorRepo.findById(doctorId).orElseThrow(() -> new RuntimeException("Doctor not found"));
+
+        if (doctor.getSchedule() == null) {
+            throw new RuntimeException("Doctor has no schedule");
+        }
+
+        return doctor.getSchedule().getTimeSlot().stream().toList();
+    }
+
+    @GetMapping("/HMS/appointment/{id}/status")
+    public String getAppointmentStatus(@PathVariable Long id) {
+        Appointment a = appointmentRepo.findById(id).orElseThrow(() -> new RuntimeException("Appointment not found"));
+        return a.getStatus();
     }
 }

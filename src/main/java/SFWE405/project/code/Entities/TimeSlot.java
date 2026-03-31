@@ -17,14 +17,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TimeSlot {
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private LocalTime duration;
-    private Boolean available;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private LocalTime duration;
+    private Boolean available;
 
     @ManyToOne
     @JoinColumn(name = "schedule_id")
