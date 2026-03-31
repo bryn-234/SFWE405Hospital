@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import SFWE405.project.code.TimeSlotTakenException;
+import SFWE405.project.code.InsufficientInfoException;
+import SFWE405.project.code.OccupancyMetException;
 import SFWE405.project.code.DTOs.MedicalRecordRequest;
 import SFWE405.project.code.DTOs.MedicationRequest;
 import SFWE405.project.code.Entities.Appointment;
@@ -154,4 +157,20 @@ public class HospitalController {
         return appointmentService.getAllSlots();
     }
 
+    @GetMapping("/HMS/{doctorId}/availability")
+    public List<TimeSlot> getDoctorAvailability(@PathVariable Long doctorId) {
+        Doctor doctor = doctorRepo.findById(doctorId).orElseThrow(() -> new RuntimeException("Doctor not found"));
+
+        if (doctor.getSchedule() == null) {
+            throw new RuntimeException("Doctor has no schedule");
+        }
+
+        return doctor.getSchedule().getTimeSlot().stream().toList();
+    }
+
+    @GetMapping("/HMS/appointment/{id}/status")
+    public String getAppointmentStatus(@PathVariable Long id) {
+        Appointment a = appointmentRepo.findById(id).orElseThrow(() -> new RuntimeException("Appointment not found"));
+        return a.getStatus();
+    }
 }
