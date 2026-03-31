@@ -21,11 +21,11 @@ public class TimeSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private LocalTime duration;
-    private Boolean Available;
+    private Boolean available;
 
     @ManyToOne
     @JoinColumn(name = "schedule_id")

@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "4797567f-556a-49a9-9ef0-3ff7d99ce748",
+    "_postman_id": "842651b6-a068-4f1b-8af6-24d548be987f",
     "name": "SFWE405Hospital",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "51749167",
-    "_collection_link": "https://go.postman.co/collection/51749167-4797567f-556a-49a9-9ef0-3ff7d99ce748?source=collection_link"
+    "_exporter_id": "51639999",
+    "_collection_link": "https://go.postman.co/collection/51639999-842651b6-a068-4f1b-8af6-24d548be987f?source=collection_link"
   },
   "item": [
     {
@@ -103,7 +103,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"name\" : \"Dr. Cerny\"\r\n}",
+          "raw": "{\r\n    \"name\" : \"Dr. Yang\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -111,7 +111,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8080/HMS/addDoctor",
+          "raw": "http://localhost:8080/HMS/1/addDoctor",
           "protocol": "http",
           "host": [
             "localhost"
@@ -119,6 +119,7 @@
           "port": "8080",
           "path": [
             "HMS",
+            "1",
             "addDoctor"
           ]
         }
@@ -140,7 +141,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8080/HMS/addDepartment",
+          "raw": "http://localhost:8080/HMS/1/addDepartment",
           "protocol": "http",
           "host": [
             "localhost"
@@ -148,6 +149,7 @@
           "port": "8080",
           "path": [
             "HMS",
+            "1",
             "addDepartment"
           ]
         }
