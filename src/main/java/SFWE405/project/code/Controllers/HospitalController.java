@@ -137,7 +137,7 @@ public class HospitalController {
 
     @GetMapping("/HMS/{doctorId}/availability")
     public List<TimeSlot> getDoctorAvailability(@PathVariable Long doctorId) {
-        Doctor doctor = doctorRepo.findById(doctorId).orElseThrow(() -> new RuntimeException("Doctor not found");
+        Doctor doctor = doctorRepo.findById(doctorId).orElseThrow(() -> new RuntimeException("Doctor not found"));
 
         if (doctor.getSchedule() == null) {
             throw new RuntimeException("Doctor has no schedule");
