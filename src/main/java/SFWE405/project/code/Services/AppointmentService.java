@@ -116,22 +116,27 @@ public class AppointmentService {
      * @throws TimeSlotTakenException if the time slot chosen has been taken
      * Author: Charlotte Montague
      */
-    
-    @Transactional
-    public Appointment schedule(Appointment app, Long id) throws OccupancyMetException, InsufficientInfoException, TimeSlotTakenException{
-        Hospital hospital = hospitalRepository.findById(id).orElseThrow(() -> new RuntimeException("Hospital not found"));
+    /**
+     * Requirement 1.1: The system shall allow patients to schedule appointments.
+     * Integrated with 3.1-3.4 (Occupancy and Info checks). Author: Miguel Sena
+     */
 
-        //Implement Requirement 3.1
-        //The system shall reject an appointment request if the Hospital occupancy has reached its maximum capacity.
+    @Transactional
+    public Appointment schedule(Appointment app, Long hospitalId)
+            throws OccupancyMetException, InsufficientInfoException, TimeSlotTakenException {
+
+        Hospital hospital = hospitalRepository.findById(hospitalId)
+                .orElseThrow(() -> new RuntimeException("Hospital not found"));
+
+        // Requirement 3.1
         checkOccupancy(hospital);
 
-        //Implement Requirement 3.2
-        //The system shall not allow an appointment to be created without a specified doctor, patient, and department.
+        // Requirement 3.2
         checkSufficientInfo(app);
 
-        //Implement Requirement 3.3
-        //The system shall only allow an appointment to be made with a doctor belonging to the department specified by the patient.
-        Doctor doctor = doctorRepo.findById(app.getDoctor().getId()).orElseThrow(() -> new RuntimeException("Doctor not found"));
+        // Fetch real entities from DB
+        Doctor doctor = doctorRepo.findById(app.getDoctor().getId())
+                .orElseThrow(() -> new RuntimeException("Doctor not found"));
 
         Patient patient = patientRepo.findById(app.getPatient().getId())
                 .orElseThrow(() -> new RuntimeException("Patient not found"));
@@ -142,21 +147,25 @@ public class AppointmentService {
         TimeSlot ts = TimeslotRepo.findById(app.getTimeslot().getId())
                 .orElseThrow(() -> new RuntimeException("Time slot not found"));
 
-        // requirement 3.3
-        checkDepartment(doctor, app);
+        // Requirement 3.3
+        if (!doctor.getDepartment().getId().equals(department.getId())) {
+            throw new InputMismatchException("Chosen doctor's department doesn't match the one selected.");
+        }
 
-        //Implement Requirement 3.4
-        //The system shall prevent an appointment from being scheduled if the selected time slot in the Schedule is not marked as "Open."
+        // Requirement 3.4
         checkTimeSlot(ts);
 
-        // Set the fully loaded entities onto the appointment
+        // Set fully loaded entities onto appointment
         app.setDoctor(doctor);
         app.setPatient(patient);
         app.setDepartment(department);
         app.setTimeslot(ts);
 
+        // Requirement 1.1 / initial scheduling state
+        app.setStatus("REQUESTED");
+
         return appointmentRepository.save(app);
-    } 
+    }
 
     //checks if the Hospitals Occupancy is equal to its capacity
     public void checkOccupancy(Hospital hospital) throws OccupancyMetException{
@@ -181,36 +190,9 @@ public class AppointmentService {
 
     //checks that the time slot chosen is open
     public void checkTimeSlot(TimeSlot ts) throws TimeSlotTakenException{
-        if(!ts.getAvailable()){
+        if (ts.getAvailable() == null || !ts.getAvailable()) {
             throw new TimeSlotTakenException("Chosen Time Slot is unavailable");
         }
-    }
-    /**
-     * Requirement 1.1: The system shall allow patients to schedule appointments.
-     * Integrated with 3.1-3.4 (Occupancy and Info checks). Author: Miguel Sena
-     */
-
-    @Transactional
-    public Appointment schedule(Appointment app, Long hospitalId) throws OccupancyMetException, InsufficientInfoException, TimeSlotTakenException {
-        Hospital hospital = hospitalRepository.findById(hospitalId)
-                .orElseThrow(() -> new RuntimeException("Hospital not found"));
-
-        // Requirements 3.1 - 3.4
-        checkOccupancy(hospital);
-        checkSufficientInfo(app);
-        
-        Doctor doctor = doctorRepo.findById(app.getDoctor().getId())
-                .orElseThrow(() -> new RuntimeException("Doctor not found"));
-        checkDepartment(doctor, app);
-
-        TimeSlot ts = TimeslotRepo.findById(app.getTimeslot().getId())
-                .orElseThrow(() -> new RuntimeException("Time slot not found"));
-        checkTimeSlot(ts);
-
-        // Requirement 1.1: Set initial status
-        app.setStatus("PENDING");
-        
-        return appointmentRepository.save(app);
     }
 
     /**
@@ -243,7 +225,7 @@ public class AppointmentService {
 
         // Requirement 1.4: Check-in must be on the same day
         // Assuming Appointment has a getAppointmentDate() or extracted from Timeslot
-        LocalDate appointmentDate = appt.getTimeslot().getDate(); 
+        LocalDate appointmentDate = appt.getTimeslot().getStartTime().toLocalDate();
         if (!appointmentDate.equals(LocalDate.now())) {
             throw new RuntimeException("Check-in is only available on the day of the appointment.");
         }
@@ -257,14 +239,22 @@ public class AppointmentService {
      * Requirement 1.3: Update profile information is typically handled in a PatientService,
      * but if you are putting it here, it would look like this:
      */
+
+    /** I don't think we need this anymore since we have a profileService
+     * with a function very similar to this
+     *
+
     @Transactional
     public void updatePatientProfile(Patient patient, String newEmail, String newUsername) {
         patient.setEmail(newEmail);
         patient.setUsername(newUsername);
         // Save via a PatientRepository if available
     }
-    
-    
+    */
+
+
+
+
 
 }
 
