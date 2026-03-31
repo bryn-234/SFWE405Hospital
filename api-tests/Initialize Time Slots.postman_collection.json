@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "4b11af18-7793-4333-9f5b-a3f9287970a3",
+    "_postman_id": "1f296cf9-b72e-429d-9ff7-eeefb7b15150",
     "name": "Initialize Time Slots",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "51781245",
-    "_collection_link": "https://go.postman.co/collection/51781245-4b11af18-7793-4333-9f5b-a3f9287970a3?source=collection_link"
+    "_exporter_id": "51639999",
+    "_collection_link": "https://go.postman.co/collection/51639999-1f296cf9-b72e-429d-9ff7-eeefb7b15150?source=collection_link"
   },
   "item": [
     {
@@ -14,7 +14,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"startTime\": \"2026-05-06T09:00:00\",\r\n    \"endTime\": \"2026-05-06T09:30:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"Available\": true\r\n}",
+          "raw": "{\r\n    \"startTime\": \"2026-05-06T09:00:00\",\r\n    \"endTime\": \"2026-05-06T09:30:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"available\": true\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -44,7 +44,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"startTime\": \"2026-05-06T09:30:00\",\r\n    \"endTime\": \"2026-05-06T10:00:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"Available\": true\r\n}",
+          "raw": "{\r\n    \"startTime\": \"2026-05-06T09:30:00\",\r\n    \"endTime\": \"2026-05-06T10:00:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"available\": true\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -74,7 +74,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"startTime\": \"2026-05-06T10:00:00\",\r\n    \"endTime\": \"2026-05-06T10:30:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"Available\": true\r\n}",
+          "raw": "{\r\n    \"startTime\": \"2026-05-06T10:00:00\",\r\n    \"endTime\": \"2026-05-06T10:30:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"available\": true\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -104,7 +104,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"startTime\": \"2026-05-06T10:30:00\",\r\n    \"endTime\": \"2026-05-06T11:00:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"Available\": true\r\n}",
+          "raw": "{\r\n    \"startTime\": \"2026-05-06T10:30:00\",\r\n    \"endTime\": \"2026-05-06T11:00:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"available\": true\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -134,7 +134,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"startTime\": \"2026-05-06T11:00:00\",\r\n    \"endTime\": \"2026-05-06T11:30:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"Available\": true\r\n}",
+          "raw": "{\r\n    \"startTime\": \"2026-05-06T11:00:00\",\r\n    \"endTime\": \"2026-05-06T11:30:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"available\": true\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -164,7 +164,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"startTime\": \"2026-05-06T11:30:00\",\r\n    \"endTime\": \"2026-05-06T12:00:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"Available\": true\r\n}",
+          "raw": "{\r\n    \"startTime\": \"2026-05-06T11:30:00\",\r\n    \"endTime\": \"2026-05-06T12:00:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"available\": true\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -194,7 +194,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"startTime\": \"2026-05-06T12:00:00\",\r\n    \"endTime\": \"2026-05-06T12:30:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"Available\": true\r\n}",
+          "raw": "{\r\n    \"startTime\": \"2026-05-06T12:00:00\",\r\n    \"endTime\": \"2026-05-06T12:30:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"available\": true\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -224,7 +224,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"startTime\": \"2026-05-06T12:30:00\",\r\n    \"endTime\": \"2026-05-06T01:00:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"Available\": true\r\n}",
+          "raw": "{\r\n    \"startTime\": \"2026-05-06T12:30:00\",\r\n    \"endTime\": \"2026-05-06T01:00:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"available\": true\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -254,7 +254,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"startTime\": \"2026-05-06T01:00:00\",\r\n    \"endTime\": \"2026-05-06T01:30:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"Available\": true\r\n}",
+          "raw": "{\r\n    \"startTime\": \"2026-05-06T01:00:00\",\r\n    \"endTime\": \"2026-05-06T01:30:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"available\": true\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -284,7 +284,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"startTime\": \"2026-05-06T01:30:00\",\r\n    \"endTime\": \"2026-05-06T02:00:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"Available\": true\r\n}",
+          "raw": "{\r\n    \"startTime\": \"2026-05-06T01:30:00\",\r\n    \"endTime\": \"2026-05-06T02:00:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"available\": true\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -314,7 +314,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"startTime\": \"2026-05-06T02:00:00\",\r\n    \"endTime\": \"2026-05-06T02:30:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"Available\": true\r\n}",
+          "raw": "{\r\n    \"startTime\": \"2026-05-06T02:00:00\",\r\n    \"endTime\": \"2026-05-06T02:30:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"available\": true\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -344,7 +344,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"startTime\": \"2026-05-06T02:30:00\",\r\n    \"endTime\": \"2026-05-06T03:00:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"Available\": true\r\n}",
+          "raw": "{\r\n    \"startTime\": \"2026-05-06T02:30:00\",\r\n    \"endTime\": \"2026-05-06T03:00:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"available\": true\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -374,7 +374,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"startTime\": \"2026-05-06T03:00:00\",\r\n    \"endTime\": \"2026-05-06T03:30:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"Available\": true\r\n}",
+          "raw": "{\r\n    \"startTime\": \"2026-05-06T03:00:00\",\r\n    \"endTime\": \"2026-05-06T03:30:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"available\": true\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -404,7 +404,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"startTime\": \"2026-05-06T03:30:00\",\r\n    \"endTime\": \"2026-05-06T04:00:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"Available\": true\r\n}",
+          "raw": "{\r\n    \"startTime\": \"2026-05-06T03:30:00\",\r\n    \"endTime\": \"2026-05-06T04:00:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"available\": true\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -434,7 +434,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"startTime\": \"2026-05-06T04:00:00\",\r\n    \"endTime\": \"2026-05-06T04:30:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"Available\": true\r\n}",
+          "raw": "{\r\n    \"startTime\": \"2026-05-06T04:00:00\",\r\n    \"endTime\": \"2026-05-06T04:30:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"available\": true\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -464,7 +464,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"startTime\": \"2026-05-06T04:30:00\",\r\n    \"endTime\": \"2026-05-06T05:00:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"Available\": true\r\n}",
+          "raw": "{\r\n    \"startTime\": \"2026-05-06T04:30:00\",\r\n    \"endTime\": \"2026-05-06T05:00:00\",\r\n    \"duration\": \"00:30:00\",\r\n    \"available\": true\r\n}",
           "options": {
             "raw": {
               "language": "json"
