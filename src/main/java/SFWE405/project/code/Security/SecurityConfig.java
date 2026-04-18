@@ -1,5 +1,6 @@
 package SFWE405.project.code.Security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -27,7 +28,9 @@ import org.springframework.security.config.Customizer;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final ProfileDetailsService profileDetailsService;
+    @Autowired private final ProfileDetailsService profileDetailsService;
+
+    @Autowired private CustomSuccessHandler customSuccessHandler;
 
     // Constructor injection of ProfileDetailsService
     public SecurityConfig(ProfileDetailsService profileDetailsService) {
@@ -50,11 +53,10 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults()) 
                 .userDetailsService(profileDetailsService)
                 .formLogin(form -> form
-                .defaultSuccessUrl("/home", true)
-                )
-                .userDetailsService(profileDetailsService)
-                .formLogin(form -> form
-                    .defaultSuccessUrl("/home", true)
+                    .loginPage("/login")
+                    .loginProcessingUrl("/login")
+                    .successHandler(customSuccessHandler)
+                    .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
