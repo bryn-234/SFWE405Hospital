@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Patient Home</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f7ff;
+        }
+
+        .navbar {
+            background: #4c8bf5;
+            padding: 15px 25px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            margin: 0;
+        }
+
+        .logout-btn {
+            background: white;
+            color: #4c8bf5;
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .logout-btn:hover {
+            background: #e6e6e6;
+        }
+
+        .content {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .content h3 {
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>Patient Portal</h2>
+
+    <form th:action="@{/logout}" method="post">
+        <button class="logout-btn" type="submit">Logout</button>
+    </form>
+</div>
+
+<div class="content">
+    <h3>Welcome, Patient!</h3>
+    <p>You are now logged in to your patient dashboard.</p>
+</div>
+
+</body>
+</html>
