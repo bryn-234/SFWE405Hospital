@@ -31,6 +31,18 @@ public class ProfileService {
     }
 
     /**
+     * Retrieves a user's profile by their username. 
+     * This is used to display profile information on the frontend.
+     * 
+     * @param username
+     * @return
+     */
+    public Profile getProfileByUsername(String username) {
+        return profileRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
+    }
+
+    /**
      * Updates a user's profile information. 
      * 
      * The method is assumed to be called after authentication, and it
