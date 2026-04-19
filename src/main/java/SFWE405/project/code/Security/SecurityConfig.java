@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,13 +30,13 @@ import org.springframework.security.config.Customizer;
 public class SecurityConfig {
 
     @Autowired private final ProfileDetailsService profileDetailsService;
-
     @Autowired private CustomSuccessHandler customSuccessHandler;
 
     // Constructor injection of ProfileDetailsService
     public SecurityConfig(ProfileDetailsService profileDetailsService) {
         this.profileDetailsService = profileDetailsService;
     }
+
 
     // Configure HTTP security, authentication, and authorization rules
     // Links /login, /register for login, and /logout for logout
@@ -46,11 +47,18 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/register", "/h2-console/**").permitAll()
+
+                        .requestMatchers("/api/**").authenticated()
+
                         .requestMatchers(HttpMethod.POST, "/slots").hasAnyAuthority("DOCTOR")
                         .requestMatchers(HttpMethod.DELETE, "/slots/**").hasAnyAuthority("DOCTOR")
+                        .requestMatchers("/patient/**").hasAuthority("PATIENT")
+                        .requestMatchers("/doctor/**").hasAuthority("DOCTOR")
+                        .requestMatchers("/profile/**").hasAnyAuthority("DOCTOR", "PATIENT")
+                        
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults()) 
+                .httpBasic(Customizer.withDefaults())
                 .userDetailsService(profileDetailsService)
                 .formLogin(form -> form
                     .loginPage("/login")
