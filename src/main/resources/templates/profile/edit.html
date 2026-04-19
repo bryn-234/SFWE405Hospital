@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 12px;
+            background: #4c8bf5;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #3a74d8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Edit Profile</h2>
+
+    <form th:action="@{/profile/edit}" method="post">
+
+        <div>
+            <label>Username</label>
+            <input type="text" name="username" th:value="${profile.username}">
+        </div>
+
+        <div>
+            <label>Email</label>
+            <input type="email" name="email" th:value="${profile.email}">
+        </div>
+
+        <div>
+            <label>New Password</label>
+            <input type="password" name="password" placeholder="Leave blank to keep current password">
+        </div>
+
+        <button type="submit">Save Changes</button>
+    </form>
+
+</body>
+</html>
