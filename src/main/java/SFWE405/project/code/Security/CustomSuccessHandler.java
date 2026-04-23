@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -19,20 +20,16 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
                                         Authentication authentication)
             throws IOException, ServletException {
 
-        String redirectURL = "/home"; // default fallback
+        // Determine role
+        String role = authentication.getAuthorities().iterator().next().getAuthority();
 
-        for (GrantedAuthority authority : authentication.getAuthorities()) {
-            String role = authority.getAuthority();
-
-            if (role.equals("DOCTOR")) {
-                redirectURL = "/doctor/home";
-                break;
-            } else if (role.equals("PATIENT")) {
-                redirectURL = "/patient/home";
-                break;
-            }
+        if (role.equals("DOCTOR")) {
+            response.sendRedirect("/doctor/home");
+        } else if (role.equals("PATIENT")) {
+            response.sendRedirect("/patient/home");
+        } else {
+            SecurityContextHolder.clearContext();
+            response.sendRedirect("/login?error=role");
         }
-
-        response.sendRedirect(redirectURL);
     }
 }

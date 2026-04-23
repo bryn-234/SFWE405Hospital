@@ -75,6 +75,14 @@ public class SeedData implements CommandLineRunner {
             pProf.setPatient(pEnt); // Link to Patient Entity
             profileRepository.save(pProf);
 
+            // no role profile (edge case testing)
+            Profile noRoleProf = new Profile();
+            noRoleProf.setUsername("norole");
+            noRoleProf.setEmail("norole@example.com");
+            noRoleProf.setPassword(passwordEncoder.encode("password"));
+            noRoleProf.setRole("NOROLE");
+            profileRepository.save(noRoleProf);
+
             // seed a time slot
             TimeSlot ts = new TimeSlot();
             ts.setStartTime(LocalDateTime.now().plusDays(1));
