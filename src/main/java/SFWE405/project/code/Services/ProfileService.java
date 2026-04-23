@@ -69,16 +69,15 @@ public class ProfileService {
             throw new RuntimeException("Unauthorized to update this profile");
         }
 
-        if (request.getPassword() != null) {
+        if (request.getPassword() != null && !request.getPassword().isEmpty()) {
             target.setPassword(passwordEncoder.encode(request.getPassword()));
         }
-        if (request.getEmail() != null) {
+        if (request.getEmail() != null && !request.getEmail().isEmpty()) {
             target.setEmail(request.getEmail());
         }
-        if (request.getUsername() != null) {
+        if (request.getUsername() != null && !request.getUsername().isEmpty()) {
             target.setUsername(request.getUsername());
-        }
-
+}
         return target;
     }
 }
