@@ -3,74 +3,271 @@
 <head>
     <title>Edit Profile</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 20px;
+        * { font-family: Arial, sans-serif; box-sizing: border-box; }
+        body { background: #f0f4ff; margin: 0; padding: 40px 20px; }
+
+        .page-wrapper {
+            display: flex;
+            max-width: 860px;
+            margin: 0 auto;
+            border: 0.5px solid #b3c8f5;
+            border-radius: 12px;
+            overflow: hidden;
+            min-height: 520px;
+            background: white;
         }
 
-        h2 {
+        .sidebar {
+            background: #e8f0fe;
+            border-right: 0.5px solid #b3c8f5;
+            width: 200px;
+            padding: 16px 8px;
+            flex-shrink: 0;
+        }
+        .sidebar-label {
+            font-size: 11px;
+            font-weight: bold;
+            color: #185FA5;
+            padding: 8px 12px 4px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .sidebar a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #185FA5;
+            text-decoration: none;
+            margin-bottom: 2px;
+        }
+        .sidebar a:hover { background: #c7d9f8; color: #0c447c; }
+        .sidebar a.active { background: #4c8bf5; color: white; font-weight: bold; }
+        .sidebar-divider {
+            margin-top: 12px;
+            border-top: 0.5px solid #b3c8f5;
+            padding-top: 12px;
+        }
+
+        .main { flex: 1; padding: 32px 40px; }
+
+        h2 { margin: 0 0 24px; font-size: 20px; font-weight: 500; color: #0c447c; }
+
+        .profile-banner {
+            background: #e8f0fe;
+            border: 0.5px solid #b3c8f5;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #4c8bf5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            flex-shrink: 0;
+        }
+        .banner-name { font-size: 20px; font-weight: 500; color: #0c447c; }
+        .banner-email { font-size: 13px; color: #185FA5; margin-top: 2px; }
+
+        .toast {
+            display: none;
+            background: #4c8bf5;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
             margin-bottom: 20px;
         }
+        .toast.show { display: block; }
 
-        form {
+        .field-row {
+            border-bottom: 0.5px solid #b3c8f5;
+            padding: 20px 0;
+        }
+        .field-row:last-of-type { border-bottom: none; }
+
+        .field-header {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
+            justify-content: space-between;
+            align-items: flex-start;
         }
-
-        label {
+        .field-label {
+            font-size: 11px;
             font-weight: bold;
+            color: #185FA5;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
         }
+        .field-current { font-size: 15px; color: #222; }
 
-        input {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
+        .edit-area { display: none; margin-top: 10px; }
+        .edit-area.open { display: block; }
+
+        .new-label { font-size: 11px; color: #185FA5; margin-bottom: 4px; }
+        .edit-area input {
+            width: 100%;
+            padding: 8px 10px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            border: 0.5px solid #b3c8f5;
+            border-radius: 8px;
+            outline: none;
         }
+        .edit-area input:focus { border-color: #4c8bf5; }
 
-        button {
-            padding: 12px;
+        .edit-btn {
+            font-size: 13px;
+            padding: 6px 16px;
+            border-radius: 8px;
+            border: 0.5px solid #4c8bf5;
+            background: white;
+            color: #4c8bf5;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .edit-btn:hover { background: #e8f0fe; }
+
+        .save-btn {
             background: #4c8bf5;
             color: white;
             border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            cursor: pointer;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14px;
             font-weight: bold;
+            cursor: pointer;
+            margin-top: 12px;
+            font-family: Arial, sans-serif;
         }
+        .save-btn:hover { background: #3a74d8; }
 
-        button:hover {
-            background: #3a74d8;
+        .cancel-btn {
+            background: transparent;
+            border: none;
+            padding: 8px 12px;
+            font-size: 14px;
+            color: #185FA5;
+            cursor: pointer;
+            margin-top: 12px;
+            font-family: Arial, sans-serif;
         }
     </style>
 </head>
-
 <body>
 
-    <h2>Edit Profile</h2>
+<div class="page-wrapper">
 
-    <form th:action="@{/profile/edit}" method="post">
+    <div class="sidebar">
+        <div class="sidebar-label">User settings</div>
+        <a class="active" href="/profile/edit">My account</a>
+        <div class="sidebar-divider">
+            <div class="sidebar-label">Navigation</div>
+            <a th:href="${homeUrl}">&#8592; Back to home</a>
+        </div>
+    </div>
 
-        <div>
-            <label>Username</label>
-            <input type="text" name="username" th:value="${profile.username}">
+    <div class="main">
+        <h2>My account</h2>
+
+        <div th:if="${param.success}" class="toast show">
+            Changes saved successfully!
         </div>
 
-        <div>
-            <label>Email</label>
-            <input type="email" name="email" th:value="${profile.email}">
+        <div class="profile-banner">
+            <div class="avatar"
+                 th:text="${#strings.toUpperCase(#strings.substring(profile.username, 0, 2))}">JC</div>
+            <div>
+                <div class="banner-name" th:text="${profile.username}">Username</div>
+                <div class="banner-email" th:text="${profile.email}">email@example.com</div>
+            </div>
         </div>
 
-        <div>
-            <label>New Password</label>
-            <input type="password" name="password" placeholder="Leave blank to keep current password">
+        <div class="field-row">
+            <div class="field-header">
+                <div>
+                    <div class="field-label">Username</div>
+                    <div class="field-current" th:text="${profile.username}">Username</div>
+                    <div class="edit-area" id="username-area">
+                        <form th:action="@{/profile/edit}" method="post">
+                            <div class="new-label">New username</div>
+                            <input type="text" name="username" placeholder="Enter new username">
+                            <div>
+                                <button type="submit" class="save-btn">Save</button>
+                                <button type="button" class="cancel-btn" onclick="closeEdit('username')">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <button class="edit-btn" onclick="openEdit('username')">Edit</button>
+            </div>
         </div>
 
-        <button type="submit">Save Changes</button>
-    </form>
+        <div class="field-row">
+            <div class="field-header">
+                <div>
+                    <div class="field-label">Email</div>
+                    <div class="field-current" th:text="${profile.email}">email@example.com</div>
+                    <div class="edit-area" id="email-area">
+                        <form th:action="@{/profile/edit}" method="post">
+                            <div class="new-label">New email</div>
+                            <input type="email" name="email" placeholder="Enter new email">
+                            <input type="hidden" name="username" value="">
+                            <input type="hidden" name="password" value="">
+                            <div>
+                                <button type="submit" class="save-btn">Save</button>
+                                <button type="button" class="cancel-btn" onclick="closeEdit('email')">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <button class="edit-btn" onclick="openEdit('email')">Edit</button>
+            </div>
+        </div>
+
+        <div class="field-row">
+            <div class="field-header">
+                <div>
+                    <div class="field-label">Password</div>
+                    <div class="field-current">••••••••••••</div>
+                    <div class="edit-area" id="password-area">
+                        <form th:action="@{/profile/edit}" method="post">
+                            <div class="new-label">New password</div>
+                            <input type="password" name="password" placeholder="Enter new password">
+                            <input type="hidden" name="username" value="">
+                            <input type="hidden" name="email" value="">
+                            <div>
+                                <button type="submit" class="save-btn">Save</button>
+                                <button type="button" class="cancel-btn" onclick="closeEdit('password')">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <button class="edit-btn" onclick="openEdit('password')">Edit</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function openEdit(field) {
+        document.getElementById(field + '-area').classList.add('open');
+    }
+    function closeEdit(field) {
+        document.getElementById(field + '-area').classList.remove('open');
+    }
+</script>
 
 </body>
 </html>
