@@ -180,8 +180,11 @@
     <div class="main">
         <h2>My account</h2>
 
-        <div th:if="${param.success}" class="toast show">
+        <div th:if="${success}" class="toast show">
             Changes saved successfully!
+        </div>
+        <div th:if="${error}" class="toast show" style="background: #e05c5c;">
+            <span th:text="${error}">Error message</span>
         </div>
 
         <div class="profile-banner">
@@ -202,6 +205,8 @@
                         <form th:action="@{/profile/edit}" method="post">
                             <div class="new-label">New username</div>
                             <input type="text" name="username" placeholder="Enter new username">
+                            <input type="hidden" name="email" value="">
+                            <input type="hidden" name="password" value="">
                             <div>
                                 <button type="submit" class="save-btn">Save</button>
                                 <button type="button" class="cancel-btn" onclick="closeEdit('username')">Cancel</button>

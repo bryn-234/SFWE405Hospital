@@ -64,16 +64,6 @@ public class ProfileService {
         Profile target = profileRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Profile not found"));
 
-        //Email uniqueness check
-        if(profileRepository.findByEmail(request.getEmail()).isPresent() && !request.getEmail().equals(target.getEmail())) {
-            throw new RuntimeException("Email already in use");
-        }
-
-        //Username uniqueness check
-        if(profileRepository.findByUsername(request.getUsername()).isPresent() && !request.getUsername().equals(target.getUsername())) {
-            throw new RuntimeException("Username already in use");
-        }
-
         // Authorization Check: Only the owner of the profile can update it
         if (!authService.isOwner(target)) {
             throw new RuntimeException("Unauthorized to update this profile");
@@ -83,9 +73,21 @@ public class ProfileService {
             target.setPassword(passwordEncoder.encode(request.getPassword()));
         }
         if (request.getEmail() != null && !request.getEmail().isEmpty()) {
+            
+            //Email uniqueness check
+            if(profileRepository.findByEmail(request.getEmail()).isPresent() && !request.getEmail().equals(target.getEmail())) {
+                throw new RuntimeException("Email already in use");
+            }
+
             target.setEmail(request.getEmail());
         }
         if (request.getUsername() != null && !request.getUsername().isEmpty()) {
+            
+            //Username uniqueness check
+            if(profileRepository.findByUsername(request.getUsername()).isPresent() && !request.getUsername().equals(target.getUsername())) {
+                throw new RuntimeException("Username already in use");
+            }
+            
             target.setUsername(request.getUsername());
         }
         return target;
