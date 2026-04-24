@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
 
 import SFWE405.project.code.Services.ProfileService;
@@ -32,8 +32,7 @@ public class ProfileController {
         Profile profile = profileService.getProfileByUsername(auth.getName());
         model.addAttribute("profile", profile);
 
-        String role = auth.getAuthorities().iterator().next().getAuthority();
-        String homeUrl = role.equals("DOCTOR") ? "/doctor/home" : "/patient/home";
+        String homeUrl = profile.getRole().equals("DOCTOR") ? "/doctor/home" : "/patient/home";
         model.addAttribute("homeUrl", homeUrl);
 
         return "profile/edit";
@@ -41,27 +40,34 @@ public class ProfileController {
 
     @PostMapping("/edit")
     public String updateProfile(
-            @ModelAttribute ProfileUpdateRequest request,
-            org.springframework.security.core.Authentication auth,
-            HttpServletRequest httpRequest,
-            Model model) {
+        @ModelAttribute ProfileUpdateRequest request,
+        org.springframework.security.core.Authentication auth,
+        HttpServletRequest httpRequest,
+        RedirectAttributes redirectAttributes) {
 
-        Profile profile = profileService.getProfileByUsername(auth.getName());
-        profileService.updateProfile(profile.getId(), request);
+        try {
+            Profile profile = profileService.getProfileByUsername(auth.getName());
+            profileService.updateProfile(profile.getId(), request);
 
-        // Force re-authentication with updated credentials
-        httpRequest.getSession().invalidate();
-        httpRequest.getSession(true);
+            httpRequest.getSession().invalidate();
+            httpRequest.getSession(true);
 
-        String newUsername = request.getUsername() != null ? request.getUsername() : auth.getName();
-        UserDetails updatedDetails = profileDetailsService.loadUserByUsername(newUsername);
-        UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
-                updatedDetails, null, updatedDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(newAuth);
-        httpRequest.getSession(true).setAttribute(
-                HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                SecurityContextHolder.getContext());
+            String newUsername = request.getUsername() != null && !request.getUsername().isEmpty()
+                    ? request.getUsername() : auth.getName();
+            UserDetails updatedDetails = profileDetailsService.loadUserByUsername(newUsername);
+            UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
+                    updatedDetails, null, updatedDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
+            httpRequest.getSession(true).setAttribute(
+                    HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                    SecurityContextHolder.getContext());
 
-        return "redirect:/profile/edit?success";
+            redirectAttributes.addFlashAttribute("success", true);
+
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+
+        return "redirect:/profile/edit";
     }
 }
