@@ -117,6 +117,25 @@
             font-weight: bold;
         }
 
+        .occupancy-section {
+            margin: 0 40px 30px 40px;
+            padding: 25px;
+            background: white;
+            border: 3px solid #00050b;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .occupancy-card {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        .occupancy-number {
+            color: #2f6fd6;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 
@@ -133,6 +152,21 @@
 <div class="content">
     <h3 th:text= "'Welcome, Dr.' + ${doctor.name} + '!'"></h3>
     <p>You are now logged in to your doctor dashboard.</p>
+</div>
+
+<div class="occupancy-section">
+    <h3>Hospital Occupancy</h3>
+
+    <div class="occupancy-card">
+        <p>
+            Current Occupancy:
+            <span class="occupancy-number" th:text="${occupancy.occupancy}"></span>
+            /
+            <span class="occupancy-number" th:text="${occupancy.capacity}"></span>
+        </p>
+
+        <p th:text="'Available Space: ' + ${occupancy.availableSpace}"></p>
+    </div>
 </div>
 
 <div class="split-container">
