@@ -86,6 +86,7 @@
             border: none;
             cursor: pointer;
             font-weight: bold;
+            text-decoration: none;
         }
 
         .editProfile-btn:hover{
@@ -138,7 +139,7 @@
     <div class="left-panel">
         <div class="panel-header">
             <h3> My Info </h3>
-            <button class="editProfile-btn" type="submit">Edit Profile</button>
+            <a th:href="@{/profile/edit}" class="editProfile-btn">Edit Profile</a>
         </div>
         <p th:text="'Name: Dr.' + ${doctor.name}"></p>
         <p th:text="'Email: ' + ${profile.email}"></p>
