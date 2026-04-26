@@ -1,5 +1,6 @@
 package SFWE405.project.code.Controllers.doctor;
 
+import SFWE405.project.code.DTOs.HospitalOccupancyDTO;
 import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,9 @@ public class DoctorController {
     @Autowired
     private AuthService authService;
 
+    @Autowired
+    private HospitalService hospitalService;
+
     @GetMapping("/home")
     public String doctorHome(Model model) {
 
@@ -27,11 +31,15 @@ public class DoctorController {
         Doctor doctor = profile.getDoctor();
         Schedule schedule = doctor.getSchedule();
         Department department = doctor.getDepartment();
+        Hospital hospital = doctor.getDepartment().getHospital();
+        Long hospitalId = hospital.getId();
+        HospitalOccupancyDTO occupancy = hospitalService.getHospitalOccupancy(hospitalId);
         model.addAttribute("doctor", doctor);
         model.addAttribute("profile", profile);
         model.addAttribute("schedule", schedule);
         model.addAttribute("department", department);
         model.addAttribute("timeSlots", schedule.getTimeSlot());
+        model.addAttribute("occupancy", occupancy);
         return "doctor/home";
     }
 
