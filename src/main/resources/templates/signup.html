@@ -2,31 +2,114 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Sign Up</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #eef6ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .signup-container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            width: 350px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #2f6fd6;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2f6fd6;
+        }
+
+        .signup-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            background: #2f6fd6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .signup-btn:hover {
+            background: #2b65c2;
+        }
+
+        .login-link {
+            margin-top: 15px;
+            display: block;
+            color: #2f6fd6;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .login-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
+
 <body>
 
-<h2>Create Account</h2>
+<div class="signup-container">
+    <h2>Create Account</h2>
 
-<form th:action="@{/signup}" th:object="${profile}" method="post">
-    <label>Username:</label>
-    <input type="text" th:field="*{username}" required><br><br>
+    <form th:action="@{/signup}" th:object="${profile}" method="post">
+        <label>Username</label>
+        <input type="text" th:field="*{username}" required>
 
-    <label>Email:</label>
-    <input type="email" th:field="*{email}" required><br><br>
+        <label>Email</label>
+        <input type="email" th:field="*{email}" required>
 
-    <label>Password:</label>
-    <input type="password" th:field="*{password}" required><br><br>
+        <label>Password</label>
+        <input type="password" th:field="*{password}" required>
 
-    <input type="hidden" name="role" value="PATIENT">
+        <!-- Always patient -->
+        <input type="hidden" name="role" value="PATIENT">
 
-    <label>First Name:</label>
-    <input type="text" name="firstName" required><br><br>
+        <label>First Name</label>
+        <input type="text" name="firstName" required>
 
-    <label>Last Name:</label>
-    <input type="text" name="lastName" required><br><br>
+        <label>Last Name</label>
+        <input type="text" name="lastName" required>
 
-    <button type="submit">Sign Up</button>
-</form>
+        <button class="signup-btn" type="submit">Sign Up</button>
+    </form>
+
+    <a class="login-link" th:href="@{/login}">
+        Already have an account? Login
+    </a>
+</div>
 
 </body>
 </html>
