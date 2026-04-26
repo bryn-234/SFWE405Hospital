@@ -116,7 +116,7 @@ public class AppointmentService {
      * @throws InsufficientInfoException if the patient, doctor, or department is missing
      * @throws TimeSlotTakenException if the time slot chosen has been taken
      * Author: Charlotte Montague
-     */
+     */ 
      
     /**
      * Requirement 1.1: The system shall allow patients to schedule appointments.
@@ -232,7 +232,7 @@ public class AppointmentService {
 
         // Requirement 1.4: Check-in must be on the same day
         // Assuming Appointment has a getAppointmentDate() or extracted from Timeslot
-        LocalDate appointmentDate = appt.getTimeslot().getStartTime().toLocalDate(); 
+        LocalDate appointmentDate = appt.getTimeslot().getDate(); 
         if (!appointmentDate.equals(LocalDate.now())) {
             throw new RuntimeException("Check-in is only available on the day of the appointment.");
         }

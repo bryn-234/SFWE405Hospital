@@ -46,21 +46,77 @@
             color: #333;
         }
 
-         .edit-btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 18px;
-            background: #4c8bf5;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-            transition: background 0.2s ease;
+        .split-container{
+            display: flex;
+            flex-direction: row;
+            height: calc(100vh - 60px);
         }
 
-        .edit-btn:hover {
-            background: #3a74d8;
+        .left-panel{
+            width: 50%;
+            padding: 40px;
+            background: #eef6ff;
+            border-right: 5px solid #00050b;
+            border-top: 5px solid #00050b;
         }
+
+        .right-panel{
+            width: 50%;
+            padding: 40px;
+            background: #eef6ff;
+            border-top: 5px solid #00050b;
+        }
+
+        .panel-header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .panel-header h3{
+            margin: 0px;
+        }
+
+        .editProfile-btn{
+            background: #2f6fd6;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .editProfile-btn:hover{
+            background: #2b65c2;
+        }
+
+        .editSchedule-btn{
+            background: #2f6fd6;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .editSchedule-btn:hover{
+            background: #2b65c2;
+        }
+
+        .available{
+            color:darkgreen;
+            font-weight: bold;
+        }
+
+        .unavailable{
+            color:crimson;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 
@@ -73,13 +129,38 @@
         <button class="logout-btn" type="submit">Logout</button>
     </form>
 </div>
-
+ 
 <div class="content">
-    <h3>Welcome, Doctor!</h3>
+    <h3 th:text= "'Welcome, Dr.' + ${doctor.name} + '!'"></h3>
     <p>You are now logged in to your doctor dashboard.</p>
-
-    <a class="edit-btn" href="/profile/edit">Edit Profile</a>
 </div>
+
+<div class="split-container">
+    <div class="left-panel">
+        <div class="panel-header">
+            <h3> My Info </h3>
+            <a th:href="@{/profile/edit}" class="editProfile-btn">Edit Profile</a>
+        </div>
+        <p th:text="'Name: Dr.' + ${doctor.name}"></p>
+        <p th:text="'Email: ' + ${profile.email}"></p>
+        <p th:text="'Username: ' + ${profile.username}"></p>
+        <p th:text="'Department: ' + ${department.name}"></p>
+    </div>
+    <div class="right-panel">
+        <div class="panel-header">
+            <h3> My Schedule </h3>
+            <button class="editSchedule-btn" type="submit">Edit Schedule</button>
+        </div>
+        <div th:each= "timeslot: ${timeSlots}">
+            <p>
+                <span th:text="${timeslot.date} + ': ' + ${timeslot.startTime} + ' to ' + ${timeslot.endTime} "></span>
+                <span th:text="${timeslot.available} ? 'Available' : 'Unavailable'"
+                    th:class="${timeslot.available} ? 'available' : 'unavailable'"></span>
+            </p>
+        </div>
+    </div>
+</div>
+
 
 </body>
 </html>
