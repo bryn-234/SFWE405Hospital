@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Schedule Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f7ff;
+        }
+
+        .navbar {
+            background: #4c8bf5;
+            padding: 15px 25px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            margin: 0;
+        }
+
+        .split-container{
+            display: flex;
+            flex-direction: row;
+            height: calc(100vh - 60px);
+        }
+
+        .left-panel{
+            width: 50%;
+            padding: 40px;
+            background: #eef6ff;
+            border-right: 5px solid #00050b;
+            border-top: 5px solid #00050b;
+        }
+
+        .right-panel{
+            width: 50%;
+            padding: 40px;
+            background: #eef6ff;
+            border-top: 5px solid #00050b;
+        }
+
+        .panel-header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .panel-header h3{
+            margin: 0px;
+        }
+
+        .home-btn {
+            background: white;
+            color: #4c8bf5;
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .home-btn:hover {
+            background: #e6e6e6;
+        }
+
+        .content {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .content h3 {
+            color: #333;
+        }
+
+        .edit-area{
+            display: none;
+            margin-top: 10px;
+        }
+
+        .edit-area.open{
+            display: block;
+        }
+
+        .editAvailability-btn{
+            background: #2f6fd6;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .editAvailability-btn:hover{
+            background: #2b65c2;
+        }
+
+        .save-btn {
+            background: #4c8bf5;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 12px;
+            font-family: Arial, sans-serif;
+        }
+        .save-btn:hover { background: #3a74d8; }
+
+        .cancel-btn {
+            background: transparent;
+            border: none;
+            padding: 8px 12px;
+            font-size: 14px;
+            color: #185FA5;
+            cursor: pointer;
+            margin-top: 12px;
+            font-family: Arial, sans-serif;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>Edit Schedule</h2>
+    <a th:href="@{/doctor/home}" class="home-btn">Back to Home</a>
+</div>
+
+<div class="content">
+    <h3 th:text= "'Dr.' + ${doctor.name} + '\'s Schedule'"></h3>
+</div>
+
+<div class="split-container">
+    <div class="left-panel">
+        <div class="panel-header">
+            <h3> My Availability </h3>
+            <button class="editAvailability-btn" onclick="openEdit('availability')">Edit Availability</button>
+        </div>
+        <div id="availability-view">
+            <div th:each= "timeslot: ${timeSlots}">
+                <div th:if="${timeslot.available != false}">
+                    <p th:text="${timeslot.date} + ': ' + ${timeslot.startTime} + ' to ' + ${timeslot.endTime} "></p>
+                </div>
+            </div>
+        </div>
+        <div id="availability-area" class="edit-area">
+            <form th:action="@{/doctor/editAvailability}" method="post">
+                <div th:each= "timeslot: ${timeSlots}">
+                    <div th:if="${timeslot.appointment == null}">
+                        <p>
+                            <span th:text="${timeslot.date} + ': ' + ${timeslot.startTime} + ' to ' + ${timeslot.endTime} "></span>
+                            <input type="checkbox" th:name="'available_' + ${timeslot.id}" th:checked="${timeslot.available}">
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="save-btn">Save</button>
+                    <button type="button" class="cancel-btn" onclick="closeEdit('availability')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="right-panel">
+        <div class="panel-header">
+            <h3> My Scheduled Appointments </h3>
+        </div>
+        <div th:each= "timeslot: ${timeSlots}">
+            <div th:if="${timeslot.appointment != null}">
+                <p>
+                    <span th:text="${timeslot.date} + ': ' + ${timeslot.startTime} + ' to ' + ${timeslot.endTime} "></span>
+                    <span th:text="' with ' + ${timeslot.appointment.patient.firstName}"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openEdit(field) {
+        document.getElementById(field + '-area').classList.add('open');
+        document.getElementById(field + '-view').style.display = 'none';
+    }
+    function closeEdit(field) {
+        document.getElementById(field + '-area').classList.remove('open');
+        document.getElementById(field + '-view').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>

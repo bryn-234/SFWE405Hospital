@@ -28,6 +28,7 @@ public class SeedData implements CommandLineRunner {
     @Autowired private DoctorRepository doctorRepository;
     @Autowired private PatientRepository patientRepository;
     @Autowired private ScheduleRepository scheduleRepository;
+    @Autowired private AppointmentRepository appointmentRepository;
 
     @Override
     //changed the seeding so now when server start a hospital, dept, patient and doctor is created for easier testing
@@ -125,7 +126,7 @@ public class SeedData implements CommandLineRunner {
             ts4.setDate(LocalDate.of(2026,04,30));
             ts4.setStartTime(LocalTime.of(3, 00));
             ts4.setEndTime(LocalTime.of(4, 30));
-            ts4.setAvailable(false);
+            ts4.setAvailable(true);
             ts4.setSchedule(schedule);
             timeSlotRepository.save(ts4);
 
@@ -136,6 +137,20 @@ public class SeedData implements CommandLineRunner {
             ts5.setAvailable(true);
             ts5.setSchedule(schedule);
             timeSlotRepository.save(ts5);
+
+            //seed appointment
+            Appointment app = new Appointment();
+            app.setAppointmentDate(LocalDate.of(2026,05,06));
+            app.setReasonForVisit("Chest Pain");
+            app.setStatus("CONFIRMED");
+            app.setCost(150);
+            app.setRoomNum(405);
+            app.setTimeslot(ts2);
+            app.setPatient(pEnt);
+            appointmentRepository.save(app);
+
+            ts2.setAppointment(app);
+            timeSlotRepository.save(ts2);
 
             System.out.println("Database Seeded Successfully:");
             System.out.println("  - Hospital (ID: 1)");

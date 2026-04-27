@@ -101,6 +101,7 @@
             border: none;
             cursor: pointer;
             font-weight: bold;
+            text-decoration: none;
         }
 
         .editSchedule-btn:hover{
@@ -183,7 +184,7 @@
     <div class="right-panel">
         <div class="panel-header">
             <h3> My Schedule </h3>
-            <button class="editSchedule-btn" type="submit">Edit Schedule</button>
+            <a th:href="@{/doctor/editSchedule}" class="editSchedule-btn">Edit Schedule</a>
         </div>
         <div th:each= "timeslot: ${timeSlots}">
             <p>
