@@ -1,86 +1,114 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <title>Patient Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Portal | Hospital System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: #f2f7ff;
-        }
-
-        .navbar {
-            background: #4c8bf5;
-            padding: 15px 25px;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar h2 {
-            margin: 0;
-        }
-
-        .logout-btn {
-            background: white;
-            color: #4c8bf5;
-            padding: 8px 14px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .logout-btn:hover {
-            background: #e6e6e6;
-        }
-
-        .content {
-            padding: 40px;
-            text-align: center;
-        }
-
-        .content h3 {
-            color: #333;
-        }
-
-        .edit-btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 18px;
-            background: #4c8bf5;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-            transition: background 0.2s ease;
-        }
-
-        .edit-btn:hover {
-            background: #3a74d8;
-        }
-
+        body { background-color: #f8f9fa; }
+        .hero-section { background: #00458b; color: white; padding: 40px 0; margin-bottom: 30px; }
+        .card { border: none; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .card:hover { transform: translateY(-5px); }
+        .btn-primary { background-color: #00458b; border: none; }
     </style>
 </head>
-
 <body>
 
-<div class="navbar">
-    <h2>Patient Portal</h2>
+    <header class="hero-section text-center">
+        <div class="container">
+            <h1 id="patient-welcome">Welcome, [Name]</h1>
+            <p id="patient-email" class="lead">Email: [email@gmail.com/hotmail.com/etc]</p>
+        </div>
+    </header>
 
-    <form th:action="@{/logout}" method="post">
-        <button class="logout-btn" type="submit">Logout</button>
-    </form>
-</div>
+    <main class="container">
+        <div class="row g-4 mb-5">
+            <div class="col-md-6">
+                <div class="card h-100 p-4 text-center">
+                    <h3>Check Appointments</h3>
+                    <p class="text-muted">View your upcoming visits, reschedule, or cancel.</p>
+                    <button class="btn btn-primary mt-auto" onclick="showSection('check-section')">View Appointments</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100 p-4 text-center">
+                    <h3>Schedule Appointment</h3>
+                    <p class="text-muted">Find a doctor and book a new time slot.</p>
+                    <button class="btn btn-success mt-auto" onclick="showSection('schedule-section')">Book Now</button>
+                </div>
+            </div>
+        </div>
 
-<div class="content">
-    <h3 th:text="'Welcome, ' + ${patient.firstName} + '!'"></h3>
-    <p>You are now logged in to your patient dashboard.</p>
-    <a class="edit-btn" href="/profile/edit">Edit Profile</a>
-    <a class="edit-btn" href="/appointments">View Appointments</a>
-</div>
+        <hr>
 
+        <section id="check-section" class="mt-5" style="display:none;">
+            <h2>Your Upcoming Appointments</h2>
+            <div class="table-responsive mt-3">
+                <table class="table table-hover bg-white rounded shadow-sm">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Doctor</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointment-list">
+                        <tr>
+                            <td>2026-05-10</td>
+                            <td>10:00 AM</td>
+                            <td>Dr. Smith</td>
+                            <td><span class="badge bg-primary">Confirmed</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-warning">Reschedule</button>
+                                <button class="btn btn-sm btn-outline-danger">Cancel</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="schedule-section" class="mt-5" style="display:none;">
+            <h2>Book an Appointment</h2>
+            <div class="card p-4 mt-3">
+                <form id="schedule-form">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Select Doctor</label>
+                            <select class="form-select" id="doctor-select">
+                                <option selected>Choose...</option>
+                                <option value="1">Dr. Smith (Cardiology)</option>
+                                <option value="2">Dr. Jones (General)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Select Date</label>
+                            <input type="date" class="form-control" id="appt-date">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Confirm Appointment</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Simple function to toggle between UI sections
+        function showSection(sectionId) {
+            document.getElementById('check-section').style.display = 'none';
+            document.getElementById('schedule-section').style.display = 'none';
+            document.getElementById(sectionId).style.display = 'block';
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        // Logic for submitting the form (Postman simulation)
+        document.getElementById('schedule-form').onsubmit = function(e) {
+            e.preventDefault();
+            alert('Appointment Scheduled! (In a real app, this sends a POST request to your Spring backend)');
+        };
+    </script>
 </body>
 </html>
