@@ -1,18 +1,14 @@
 package SFWE405.project.code.Controllers;
 
 import SFWE405.project.code.Entities.Profile;
-import SFWE405.project.code.Repositories.ProfileRepository;
-import SFWE405.project.code.Entities.Patient;
-import SFWE405.project.code.Repositories.PatientRepository;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
-
+import SFWE405.project.code.Services.AuthService;
 
 /**
  * Controller for handling authentication-related requests, such as login. Redirects users to login page.
@@ -23,13 +19,7 @@ import org.springframework.ui.Model;
 @Controller
 public class AuthController {
     @Autowired
-    private ProfileRepository profileRepo;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private PatientRepository patientRepo;
+    private AuthService authService;
 
     @GetMapping("/login")
     public String login() {
@@ -47,30 +37,12 @@ public class AuthController {
                          @RequestParam String firstName,
                          @RequestParam String lastName,
                          Model model) {
-
-        // if both username and email exist, throw error
-        if (profileRepo.findByEmail(profile.getEmail()).isPresent() && profileRepo.findByUsername(profile.getUsername()).isPresent()) {
-            model.addAttribute("error", "Username and Email already in use");
-            return "signup";
-        } else if (profileRepo.findByEmail(profile.getEmail()).isPresent()) {
-            model.addAttribute("error", "Email is already in use");
-            return "signup";
-        } else if (profileRepo.findByUsername(profile.getUsername()).isPresent()) {
-            model.addAttribute("error", "Username is already taken");
+        try {
+            authService.signupPatient(profile, firstName, lastName);
+            return "redirect:/login";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
             return "signup";
         }
-
-        profile.setPassword(passwordEncoder.encode(profile.getPassword()));
-        profile.setRole("PATIENT");
-
-        Patient patient = new Patient();
-        patient.setFirstName(firstName);
-        patient.setLastName(lastName);
-        patientRepo.save(patient);
-
-        profile.setPatient(patient);
-        profileRepo.save(profile);
-
-        return "redirect:/login";
     }
 }
