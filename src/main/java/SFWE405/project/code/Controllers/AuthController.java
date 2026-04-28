@@ -45,18 +45,30 @@ public class AuthController {
     @PostMapping("/signup")
     public String signup(@ModelAttribute Profile profile,
                          @RequestParam String firstName,
-                         @RequestParam String lastName) {
+                         @RequestParam String lastName,
+                         Model model) {
+
+        // if both username and email exist, throw error
+        if (profileRepo.findByEmail(profile.getEmail()).isPresent() && profileRepo.findByUsername(profile.getUsername()).isPresent()) {
+            model.addAttribute("error", "Username and Email already in use");
+            return "signup";
+        } else if (profileRepo.findByEmail(profile.getEmail()).isPresent()) {
+            model.addAttribute("error", "Email is already in use");
+            return "signup";
+        } else if (profileRepo.findByUsername(profile.getUsername()).isPresent()) {
+            model.addAttribute("error", "Username is already taken");
+            return "signup";
+        }
 
         profile.setPassword(passwordEncoder.encode(profile.getPassword()));
+        profile.setRole("PATIENT");
 
         Patient patient = new Patient();
         patient.setFirstName(firstName);
         patient.setLastName(lastName);
         patientRepo.save(patient);
 
-        profile.setRole("PATIENT");
         profile.setPatient(patient);
-
         profileRepo.save(profile);
 
         return "redirect:/login";
