@@ -103,6 +103,8 @@
         <label>Last Name</label>
         <input type="text" name="lastName" required>
 
+        <label style="color:red;" th:if="${error}" th:text="${error}"></label>
+
         <button class="signup-btn" type="submit">Sign Up</button>
     </form>
 
