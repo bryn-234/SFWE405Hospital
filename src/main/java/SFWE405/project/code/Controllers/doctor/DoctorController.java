@@ -102,9 +102,12 @@ public class DoctorController {
             @RequestParam Integer currentYear,
             RedirectAttributes redirectAttributes) {
         
+        try {
         scheduleService.toggleSlotAvailability(slotId);
-        
-        // Ensure the page reloads to the same month/year
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+
         redirectAttributes.addAttribute("month", currentMonth);
         redirectAttributes.addAttribute("year", currentYear);
         
