@@ -281,7 +281,7 @@ public class SeedData implements CommandLineRunner {
             System.out.println("Time slots created: 375");
             System.out.println("Appointments created: 90");
             System.out.println("Doctor usernames: doctor1 - doctor15");
-            System.out.println("Patient usernames: patient1 - patient30");
+            System.out.println("Patient usernames: patient1 - patient60");
             System.out.println("Password for all accounts: password");
         }
     }
