@@ -1,7 +1,6 @@
 package SFWE405.project.code;
 
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.scheduling.config.SchedulerBeanDefinitionParser;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import SFWE405.project.code.Entities.*;
 import SFWE405.project.code.Repositories.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 

@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,8 +25,6 @@ import SFWE405.project.code.Entities.*;
 @Controller
 @RequestMapping("/doctor")
 public class DoctorController {
-    @Autowired
-    private ProfileRepository profileRepo;
 
     @Autowired
     private TimeSlotRepository tsRepo;
