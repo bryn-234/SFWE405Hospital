@@ -67,16 +67,15 @@
                         <h5 class="mb-0">My Schedule</h5>
                         <a th:href="@{/doctor/editSchedule}" class="btn btn-primary btn-sm">Edit Schedule</a>
                     </div>
-                    <div th:each="timeslot: ${timeSlots}">
-                        <p class="mb-1">
-                            <span th:text="${timeslot.date} + ': ' + ${timeslot.startTime} + ' to ' + ${timeslot.endTime}"></span>
-                            <span th:if="${timeslot.appointment != null}"
-                                  th:text="'Appointment with ' + ${timeslot.appointment.patient.firstName} + ' ' + ${timeslot.appointment.patient.lastName}"
-                                  class="unavailable"></span>
-                            <span th:if="${timeslot.appointment == null}"
-                                  th:text="${timeslot.available} ? 'Available' : 'Unavailable'"
-                                  th:class="${timeslot.available} ? 'available' : 'unavailable'"></span>
-                        </p>
+                    <div class="slots-container">
+                        <th:block th:each="timeslot : ${timeSlots}">
+                            <p class="mb-1" th:if="${timeslot.appointment != null && timeslot.appointment.patient != null}">
+                                <span th:text="${timeslot.date} + ': ' + ${timeslot.startTime} + ' to ' + ${timeslot.endTime}"></span>
+                                <span class="unavailable ms-2" 
+                                    th:text="'Appointment with ' + ${timeslot.appointment.patient.firstName} + ' ' + ${timeslot.appointment.patient.lastName}">
+                                </span>
+                            </p>
+                        </th:block>
                     </div>
                 </div>
             </div>
