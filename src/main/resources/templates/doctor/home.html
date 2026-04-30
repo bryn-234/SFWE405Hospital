@@ -23,7 +23,7 @@
             <h1 th:text="'Welcome, Dr.' + ${doctor.name} + '!'">Welcome, Dr. [Name]!</h1>
             <p class="lead">You are now logged in to your doctor dashboard.</p>
             <div class="hero-actions">
-                <a href="@{/profile/edit}" class="btn btn-outline-light">&#9881; Edit Profile</a>
+                <a th:href="@{/profile/edit}" class="btn btn-outline-light">&#9881; Edit Profile</a>
                 <form th:action="@{/logout}" method="post" style="margin:0;">
                     <button type="submit" class="btn btn-light text-danger fw-bold">&#8594; Log Out</button>
                 </form>
