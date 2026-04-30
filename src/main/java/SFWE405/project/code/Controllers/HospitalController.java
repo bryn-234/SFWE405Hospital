@@ -33,10 +33,6 @@ import SFWE405.project.code.Services.AppointmentService;
 import SFWE405.project.code.Services.DoctorService;
 import SFWE405.project.code.Services.HospitalService;
 
-import SFWE405.project.code.InsufficientInfoException;
-import SFWE405.project.code.OccupancyMetException;
-import SFWE405.project.code.TimeSlotTakenException;
-
 @RestController
 public class HospitalController {
     @Autowired
