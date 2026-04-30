@@ -13,7 +13,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-
+import java.util.Random;
 
 @Component
 public class SeedData implements CommandLineRunner {
@@ -168,10 +168,53 @@ public class SeedData implements CommandLineRunner {
                     "Devon Booker"
             };
 
+            Random rand = new Random();
+
+            String[] sexes = {"Male", "Female"};
+            String[] medications = {
+                    "Ibuprofen", "Amoxicillin", "Lisinopril", "Metformin", "Atorvastatin"
+            };
+
             for (int i = 0; i < patientNames.length; i++) {
                 Patient patient = new Patient();
 
-                patient.setFirstName(patientNames[i]);
+                String[] parts = patientNames[i].split(" ");
+                patient.setFirstName(parts[0]);
+                patient.setLastName(parts[1]);
+
+                // Random birthdate (ages ~18–80)
+                int year = 1945 + rand.nextInt(60);
+                int month = 1 + rand.nextInt(12);
+                int day = 1 + rand.nextInt(28);
+                patient.setBirthDate(LocalDate.of(year, month, day));
+
+                // Fake phone number
+                patient.setPhoneNumber("520-555-" + String.format("%04d", rand.nextInt(10000)));
+
+                // Random sex
+                patient.setSex(sexes[rand.nextInt(sexes.length)]);
+
+                String[] medicalRecords = {
+                        "No major conditions. Routine visits.",
+                        "History of hypertension. Monitored regularly.",
+                        "Diabetic patient. Requires regular blood sugar checks.",
+                        "Asthma patient. Uses inhaler as needed.",
+                        "Recovering from minor surgery.",
+                        "High cholesterol. On medication.",
+                        "Frequent migraines reported.",
+                        "Allergic to penicillin.",
+                        "Previous fracture. Fully healed.",
+                        "Chronic back pain. Under treatment."
+                };
+
+                patient.setMedicalRecord(medicalRecords[rand.nextInt(medicalRecords.length)]);
+
+                // Random medication (some patients have none)
+                if (rand.nextBoolean()) {
+                    patient.setPrescribedMedications(medications[rand.nextInt(medications.length)]);
+                } else {
+                    patient.setPrescribedMedications("None");
+                }
 
                 patientRepository.save(patient);
 

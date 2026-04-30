@@ -71,7 +71,7 @@
                         <p class="mb-1">
                             <span th:text="${timeslot.date} + ': ' + ${timeslot.startTime} + ' to ' + ${timeslot.endTime}"></span>
                             <span th:if="${timeslot.appointment != null}"
-                                  th:text="'Appointment with ' + ${timeslot.appointment.patient.firstName}"
+                                  th:text="'Appointment with ' + ${timeslot.appointment.patient.firstName} + ' ' + ${timeslot.appointment.patient.lastName}"
                                   class="unavailable"></span>
                             <span th:if="${timeslot.appointment == null}"
                                   th:text="${timeslot.available} ? 'Available' : 'Unavailable'"
