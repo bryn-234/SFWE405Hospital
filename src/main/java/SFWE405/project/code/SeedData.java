@@ -255,6 +255,7 @@ public class SeedData implements CommandLineRunner {
 
             for (int i = 0; i < appointmentCount; i++) {
                 Patient patient = patients.get(i % patients.size());
+                Doctor doctor = doctors.get(i % doctors.size());
                 TimeSlot timeSlot = timeSlots.get(i);
 
                 Appointment appointment = new Appointment();
@@ -265,6 +266,7 @@ public class SeedData implements CommandLineRunner {
                 appointment.setRoomNum(400 + i);
                 appointment.setTimeslot(timeSlot);
                 appointment.setPatient(patient);
+                appointment.setDoctor(doctor);
                 appointmentRepository.save(appointment);
 
                 timeSlot.setAvailable(false);
