@@ -232,9 +232,11 @@ public class SeedData implements CommandLineRunner {
             // -------------------------
             List<Patient> patients = new ArrayList<>(patientRepository.findAll());
             List<TimeSlot> timeSlots = new ArrayList<>(timeSlotRepository.findAllByOrderByDateAscStartTimeAsc());
+            List<Doctor> doctors = new ArrayList<>(doctorRepository.findAll());
 
             Collections.shuffle(patients);
             Collections.shuffle(timeSlots);
+            Collections.shuffle(doctors);
 
             String[] reasons = {
                     "Chest pain",
