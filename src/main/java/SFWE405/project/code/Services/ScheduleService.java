@@ -34,6 +34,8 @@ public class ScheduleService {
 
     public List<TimeSlot> getSlotsForMonth(Schedule schedule, int year, int month) {
         return schedule.getTimeSlot().stream()
+                .sorted(Comparator.comparing(TimeSlot::getDate)
+                                .thenComparing(TimeSlot::getStartTime))
                 .filter(ts -> ts.getDate().getYear() == year && ts.getDate().getMonthValue() == month)
                 .collect(Collectors.toList());
     }
@@ -61,6 +63,13 @@ public class ScheduleService {
             throw new Exception("End time must be after the start time.");
         }
 
+        if(schedule.getTimeSlot().stream().anyMatch(ts -> ts.getDate().equals(parsedDate) &&
+                ((startTime.isBefore(ts.getEndTime()) && startTime.isAfter(ts.getStartTime())) ||
+                 (endTime.isBefore(ts.getEndTime()) && endTime.isAfter(ts.getStartTime())) ||
+                 (startTime.equals(ts.getStartTime()) || endTime.equals(ts.getEndTime()))))) {
+            throw new Exception("This time slot overlaps with an existing slot.");
+        }
+
         // 3. Save if all checks pass
         TimeSlot newSlot = new TimeSlot();
         newSlot.setDate(parsedDate);
@@ -71,9 +80,15 @@ public class ScheduleService {
         tsRepo.save(newSlot);
     }
 
-    public void toggleSlotAvailability(Long slotId) {
+    public void toggleSlotAvailability(Long slotId) throws Exception {
         TimeSlot ts = tsRepo.findById(slotId)
                 .orElseThrow(() -> new RuntimeException("Slot not found"));
+        
+        // Check if there is an appointment attached
+        if (ts.getAppointment() != null) {
+            throw new Exception("This slot is already booked and cannot be toggled.");
+        }
+        
         ts.setAvailable(!ts.getAvailable());
         tsRepo.save(ts);
     }
