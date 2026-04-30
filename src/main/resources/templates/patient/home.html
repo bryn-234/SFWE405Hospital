@@ -30,6 +30,7 @@
     </header>
 
     <main class="container">
+        <input type="hidden" id="reschedule-id" name="rescheduleId" th:value="${rescheduleId}"/>
         <div class="row g-4 mb-5">
             <div class="col-md-6">
                 <div class="card h-100 p-4 text-center">
@@ -63,14 +64,22 @@
                         </tr>
                     </thead>
                     <tbody id="appointment-list">
-                        <tr>
-                            <td>2026-05-10</td>
-                            <td>10:00 AM</td>
-                            <td>Dr. Smith</td>
-                            <td><span class="badge bg-primary">Confirmed</span></td>
+                        <input type="hidden" id="reschedule-id-flag" th:value="${rescheduleId}"/>
+                        <tr th:if="${#lists.isEmpty(appointments)}">
+                            <td colspan="5" class="text-center text-muted">No upcoming appointments.</td>
+                        </tr>
+                        <tr th:each="appointment: ${appointments}">
+                            <td th:text="'Date: ' + ${appointment.timeslot.date}"></td>
+                            <td th:text="${appointment.timeslot.startTime} + ' - ' + ${appointment.timeslot.endTime}"></td>
+                            <td th:text="${appointment.doctor.name}"></td>
+                            <td><span class="badge bg-primary" th:text="${appointment.status}"></span></td>
                             <td>
-                                <button class="btn btn-sm btn-outline-warning">Reschedule</button>
-                                <button class="btn btn-sm btn-outline-danger">Cancel</button>
+                                <form th:action="@{/patient/reschedule/{id}(id=${appointment.id})}" method="get" style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-outline-warning">Reschedule</button>
+                                </form>
+                                <form th:action="@{/patient/cancel/{id}(id=${appointment.id})}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
+                                </form>
                             </td>
                         </tr>
                     </tbody>
@@ -81,11 +90,11 @@
         <section id="schedule-section" class="mt-5" style="display:none;">
             <h2>Book an Appointment</h2>
             <div class="card p-4 mt-3">
-                <form id="schedule-form">
+                <form id="schedule-form" action="/patient/schedule" method="post">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Select Doctor</label>
-                            <select class="form-select" id="doctor-select" onchange="loadTimeSlots()">
+                            <select class="form-select" id="doctor-select" name="doctorId">
                                 <option selected>Choose...</option>
                                     <option th:each="doctor: ${doctors}"
                                             th:value="${doctor.id}"
@@ -95,7 +104,7 @@
                         </div>
                         <div class="col-md-6 mb-3" id="timeslot-container" style="display:none;">
                             <label class="form-label">Select Timeslot</label>
-                            <select class="form-select" id="timeslot-select">
+                            <select class="form-select" id="timeslot-select" name="timeslotId">
                                 <option value="">Choose a timeslot...</option>
                             </select>
                         </div>
@@ -145,6 +154,11 @@
                 timeslotContainer.style.display = 'block';
             });
         });
+
+        const flag = document.getElementById('reschedule-id-flag');
+        if (flag && flag.value && flag.value !== "null") {
+            showSection('schedule-section');
+        }
 
     </script>
 </body>

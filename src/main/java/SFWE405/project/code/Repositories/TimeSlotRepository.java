@@ -5,7 +5,11 @@ import org.springframework.stereotype.Repository;
 
 import SFWE405.project.code.Entities.TimeSlot;
 
+import java.util.List;
+
 @Repository
 public interface TimeSlotRepository extends JpaRepository<TimeSlot, Long> {
     TimeSlot findById(long id);
+    List<TimeSlot> findAllByOrderByDateAscStartTimeAsc();
+    List<TimeSlot> findByScheduleIdOrderByDateAscStartTimeAsc(Long scheduleId);
 }

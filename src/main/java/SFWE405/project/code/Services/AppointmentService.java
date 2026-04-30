@@ -23,7 +23,6 @@ import SFWE405.project.code.Repositories.HospitalRepository;
 import SFWE405.project.code.Repositories.TimeSlotRepository;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 
 import org.springframework.stereotype.Service;

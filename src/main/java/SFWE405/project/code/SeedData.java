@@ -1,7 +1,6 @@
 package SFWE405.project.code;
 
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.scheduling.config.SchedulerBeanDefinitionParser;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,155 +9,285 @@ import SFWE405.project.code.Entities.*;
 import SFWE405.project.code.Repositories.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-
-
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 @Component
 public class SeedData implements CommandLineRunner {
 
-    @Autowired private ProfileRepository profileRepository;
-    @Autowired private PasswordEncoder passwordEncoder;
-    @Autowired private HospitalRepository hospitalRepository;
-    @Autowired private DepartmentRepository departmentRepository;
-    @Autowired private TimeSlotRepository timeSlotRepository;
-    
+    @Autowired
+    private ProfileRepository profileRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private HospitalRepository hospitalRepository;
+    @Autowired
+    private DepartmentRepository departmentRepository;
+    @Autowired
+    private TimeSlotRepository timeSlotRepository;
+
     // Injections for the medical entities
-    @Autowired private DoctorRepository doctorRepository;
-    @Autowired private PatientRepository patientRepository;
-    @Autowired private ScheduleRepository scheduleRepository;
-    @Autowired private AppointmentRepository appointmentRepository;
+    @Autowired
+    private DoctorRepository doctorRepository;
+    @Autowired
+    private PatientRepository patientRepository;
+    @Autowired
+    private ScheduleRepository scheduleRepository;
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     @Override
-    //changed the seeding so now when server start a hospital, dept, patient and doctor is created for easier testing
     public void run(String... args) {
-        
-        if (profileRepository.count() == 0) {
-            
-            //hospital seed
-            Hospital h = new Hospital();
-            h.setId(1L);
-            h.setName("UofA Hospital");
-            h.setCapacity(100);
-            h.setOccupancy(0);
-            hospitalRepository.save(h);
 
-            //department seeds
-            Department dept1 = new Department();
-            dept1.setId(1L);
-            dept1.setName("Cardiology Department");
-            dept1.setHospital(h);
-            departmentRepository.save(dept1);
+        if (hospitalRepository.count() == 0 &&
+                departmentRepository.count() == 0 &&
+                doctorRepository.count() == 0 &&
+                patientRepository.count() == 0) {
 
-            Department dept2 = new Department();
-            dept2.setId(2L);
-            dept2.setName("Surgery Department");
-            dept2.setHospital(h);
-            departmentRepository.save(dept2);
+            // -------------------------
+            // Hospital
+            // -------------------------
+            Hospital hospital = new Hospital();
+            hospital.setName("UofA Hospital");
+            hospital.setCapacity(100);
+            hospital.setOccupancy(0);
+            hospitalRepository.save(hospital);
 
-            // doctor entity
-            Doctor dEnt = new Doctor();
-            dEnt.setName("Cerny");
-            dEnt.setDepartment(dept1);
-            doctorRepository.save(dEnt);
+            // -------------------------
+            // Departments
+            // -------------------------
+            String[] departmentNames = {
+                    "Emergency Department",
+                    "Radiology",
+                    "Pediatrics",
+                    "Cardiology",
+                    "Oncology"
+            };
 
-            dept1.addDoctor(dEnt);
-            departmentRepository.save(dept1);
+            Department[] departments = new Department[departmentNames.length];
 
-            //doctor profile
-            Profile dProf = new Profile();
-            dProf.setUsername("doctor");
-            dProf.setEmail("drCerny@example.com");
-            dProf.setPassword(passwordEncoder.encode("password"));
-            dProf.setRole("DOCTOR");
-            dProf.setDoctor(dEnt);
-            profileRepository.save(dProf);
-            
-            //patient entity
-            Patient pEnt = new Patient();
-            pEnt.setFirstName("Joseph");
-            patientRepository.save(pEnt);
+            for (int i = 0; i < departmentNames.length; i++) {
+                Department department = new Department();
+                department.setName(departmentNames[i]);
+                department.setHospital(hospital);
+                departmentRepository.save(department);
+                departments[i] = department;
+            }
 
-            // patient profile
-            Profile pProf = new Profile();
-            pProf.setUsername("joseph");
-            pProf.setEmail("joseph@example.com");
-            pProf.setPassword(passwordEncoder.encode("password"));
-            pProf.setRole("PATIENT");
-            pProf.setPatient(pEnt); // Link to Patient Entity
-            profileRepository.save(pProf);
+            // -------------------------
+            // Doctors
+            // -------------------------
+            String[] doctorNames = {
+                    "Tomas Cerny",
+                    "Anna Smith",
+                    "Tara Patel",
+                    "Katie Nguyen",
+                    "John Garcia",
+                    "Ben Johnson",
+                    "Ken Lee",
+                    "Leah Brown",
+                    "Chris Martinez",
+                    "Owen Wilson",
+                    "Chris Kim",
+                    "Camry Anderson",
+                    "Elliot Thomas",
+                    "Elijah Moore",
+                    "Becca Taylor"
+            };
 
-            //seed doctor schedule
-            Schedule schedule = new Schedule();
-            schedule.setDoctor(dEnt);
-            scheduleRepository.save(schedule);
+            LocalDate startDate = LocalDate.of(2026, 5, 4); // Monday
 
-            dEnt.setSchedule(schedule);
-            doctorRepository.save(dEnt);
+            LocalTime[] slotStartTimes = {
+                    LocalTime.of(8, 0),
+                    LocalTime.of(9, 30),
+                    LocalTime.of(11, 0),
+                    LocalTime.of(13, 30),
+                    LocalTime.of(15, 0)
+            };
 
-            // seed time slots
-            TimeSlot ts1 = new TimeSlot();
-            ts1.setDate(LocalDate.of(2026, 05, 02));
-            ts1.setStartTime(LocalTime.of(1, 00));
-            ts1.setEndTime(LocalTime.of(3, 00));
-            ts1.setAvailable(true);
-            ts1.setSchedule(schedule);
-            timeSlotRepository.save(ts1);
+            for (int i = 0; i < doctorNames.length; i++) {
+                Doctor doctor = new Doctor();
+                doctor.setName(doctorNames[i]);
+                doctor.setDepartment(departments[i % departments.length]);
+                doctorRepository.save(doctor);
 
-            TimeSlot ts2 = new TimeSlot();
-            ts2.setDate(LocalDate.of(2026,05,06));
-            ts2.setStartTime(LocalTime.of(1, 45));
-            ts2.setEndTime(LocalTime.of(2, 30));
-            ts2.setAvailable(false);
-            ts2.setSchedule(schedule);
-            timeSlotRepository.save(ts2);
+                Profile doctorProfile = new Profile();
+                doctorProfile.setUsername("doctor" + (i + 1));
+                doctorProfile.setEmail("doctor" + (i + 1) + "@example.com");
+                doctorProfile.setPassword(passwordEncoder.encode("password"));
+                doctorProfile.setRole("DOCTOR");
+                doctorProfile.setDoctor(doctor);
+                profileRepository.save(doctorProfile);
 
-            TimeSlot ts3 = new TimeSlot();
-            ts3.setDate(LocalDate.of(2026,05,12));
-            ts3.setStartTime(LocalTime.of(9, 00));
-            ts3.setEndTime(LocalTime.of(10, 00));
-            ts3.setAvailable(true);
-            ts3.setSchedule(schedule);
-            timeSlotRepository.save(ts3);
+                Schedule schedule = new Schedule();
+                schedule.setDoctor(doctor);
+                scheduleRepository.save(schedule);
 
-            TimeSlot ts4 = new TimeSlot();
-            ts4.setDate(LocalDate.of(2026,04,30));
-            ts4.setStartTime(LocalTime.of(3, 00));
-            ts4.setEndTime(LocalTime.of(4, 30));
-            ts4.setAvailable(true);
-            ts4.setSchedule(schedule);
-            timeSlotRepository.save(ts4);
+                doctor.setSchedule(schedule);
+                doctorRepository.save(doctor);
 
-            TimeSlot ts5 = new TimeSlot();
-            ts5.setDate(LocalDate.of(2026,05,06));
-            ts5.setStartTime(LocalTime.of(11, 30));
-            ts5.setEndTime(LocalTime.of(12, 30));
-            ts5.setAvailable(true);
-            ts5.setSchedule(schedule);
-            timeSlotRepository.save(ts5);
+                // 5 weekdays x 5 slots per day = 25 time slots per doctor
+                for (int day = 0; day < 5; day++) {
+                    LocalDate currentDate = startDate.plusDays(day);
 
-            //seed appointment
-            Appointment app = new Appointment();
-            app.setAppointmentDate(LocalDate.of(2026,05,06));
-            app.setReasonForVisit("Chest Pain");
-            app.setStatus("CONFIRMED");
-            app.setCost(150);
-            app.setRoomNum(405);
-            app.setTimeslot(ts2);
-            app.setPatient(pEnt);
-            appointmentRepository.save(app);
+                    for (int slot = 0; slot < slotStartTimes.length; slot++) {
+                        TimeSlot timeSlot = new TimeSlot();
+                        timeSlot.setDate(currentDate);
+                        timeSlot.setStartTime(slotStartTimes[slot]);
+                        timeSlot.setEndTime(slotStartTimes[slot].plusHours(1));
+                        timeSlot.setAvailable(true);
+                        timeSlot.setSchedule(schedule);
+                        timeSlotRepository.save(timeSlot);
+                    }
+                }
+            }
 
-            ts2.setAppointment(app);
-            timeSlotRepository.save(ts2);
+            // -------------------------
+            // Patients
+            // -------------------------
+            String[] patientNames = {
+                    "Joseph Corella", "Bryn Neal", "Charlotte Montague", "Miguel Sena",
+                    "Noah Davis", "Ava Wilson", "Ethan Martinez", "Sophia Anderson",
+                    "Mason Thomas", "Isabella Moore", "Logan Jackson", "Mia White",
+                    "Lucas Harris", "Charlotte Martin", "James Thompson", "Amelia Garcia",
+                    "Benjamin Clark", "Harper Lewis", "Elijah Robinson", "Evelyn Walker",
+                    "Daniel Young", "Abigail Allen", "Henry King", "Emily Wright",
+                    "Jackson Scott", "Ella Green", "Sebastian Baker", "Avery Adams",
+                    "Matthew Nelson", "Sofia Carter",
 
-            System.out.println("Database Seeded Successfully:");
-            System.out.println("  - Hospital (ID: 1)");
-            System.out.println("  - Doctor: 'doctor' (ID: 1)");
-            System.out.println("  - Patient: 'joseph' (ID: 1)");
-            System.out.println("  - Schedule (ID: 1)");
-            System.out.println("  - TimeSlot (ID: 1)");
-            System.out.println ("All passwords are password");
+                    "Liam Brooks", "Olivia Bennett", "Jacob Rivera", "Emma Collins",
+                    "Michael Perez", "Grace Stewart", "David Morris", "Chloe Rogers",
+                    "Samuel Reed", "Hannah Cook", "Andrew Morgan", "Lily Bell",
+                    "Christopher Murphy", "Zoe Bailey", "Joshua Cooper", "Natalie Richardson",
+                    "Ryan Cox", "Victoria Howard", "Nathan Ward", "Aria Peterson",
+                    "Aaron Gray", "Scarlett Ramirez", "Isaac James", "Ellie Watson",
+                    "Connor Brooks", "Madeline Sanders", "Caleb Price", "Nora Butler", "Luke Sheridan",
+                    "Devon Booker"
+            };
+
+            Random rand = new Random();
+
+            String[] sexes = {"Male", "Female"};
+            String[] medications = {
+                    "Ibuprofen", "Amoxicillin", "Lisinopril", "Metformin", "Atorvastatin"
+            };
+
+            for (int i = 0; i < patientNames.length; i++) {
+                Patient patient = new Patient();
+
+                String[] parts = patientNames[i].split(" ");
+                patient.setFirstName(parts[0]);
+                patient.setLastName(parts[1]);
+
+                // Random birthdate (ages ~18–80)
+                int year = 1945 + rand.nextInt(60);
+                int month = 1 + rand.nextInt(12);
+                int day = 1 + rand.nextInt(28);
+                patient.setBirthDate(LocalDate.of(year, month, day));
+
+                // Fake phone number
+                patient.setPhoneNumber("520-555-" + String.format("%04d", rand.nextInt(10000)));
+
+                // Random sex
+                patient.setSex(sexes[rand.nextInt(sexes.length)]);
+
+                String[] medicalRecords = {
+                        "No major conditions. Routine visits.",
+                        "History of hypertension. Monitored regularly.",
+                        "Diabetic patient. Requires regular blood sugar checks.",
+                        "Asthma patient. Uses inhaler as needed.",
+                        "Recovering from minor surgery.",
+                        "High cholesterol. On medication.",
+                        "Frequent migraines reported.",
+                        "Allergic to penicillin.",
+                        "Previous fracture. Fully healed.",
+                        "Chronic back pain. Under treatment."
+                };
+
+                patient.setMedicalRecord(medicalRecords[rand.nextInt(medicalRecords.length)]);
+
+                // Random medication (some patients have none)
+                if (rand.nextBoolean()) {
+                    patient.setPrescribedMedications(medications[rand.nextInt(medications.length)]);
+                } else {
+                    patient.setPrescribedMedications("None");
+                }
+
+                patientRepository.save(patient);
+
+                Profile patientProfile = new Profile();
+                patientProfile.setUsername("patient" + (i + 1));
+                patientProfile.setEmail("patient" + (i + 1) + "@example.com");
+                patientProfile.setPassword(passwordEncoder.encode("password"));
+                patientProfile.setRole("PATIENT");
+                patientProfile.setPatient(patient);
+                profileRepository.save(patientProfile);
+            }
+
+            // -------------------------
+            // Appointments
+            // -------------------------
+            List<Patient> patients = new ArrayList<>(patientRepository.findAll());
+            List<TimeSlot> timeSlots = new ArrayList<>(timeSlotRepository.findAllByOrderByDateAscStartTimeAsc());
+            List<Doctor> doctors = new ArrayList<>(doctorRepository.findAll());
+
+            Collections.shuffle(patients);
+            Collections.shuffle(timeSlots);
+            Collections.shuffle(doctors);
+
+            String[] reasons = {
+                    "Chest pain",
+                    "Annual checkup",
+                    "X-ray consultation",
+                    "Follow-up visit",
+                    "Pediatric wellness visit",
+                    "Blood pressure concerns",
+                    "Cancer screening",
+                    "Emergency evaluation",
+                    "Lab results review",
+                    "Medication consultation"
+            };
+
+            int appointmentCount = 90;
+
+            for (int i = 0; i < appointmentCount; i++) {
+                Patient patient = patients.get(i % patients.size());
+                TimeSlot timeSlot = timeSlots.get(i);
+                Doctor doctor = doctors.get(i % doctors.size());
+
+                Appointment appointment = new Appointment();
+                appointment.setAppointmentDate(timeSlot.getDate());
+                appointment.setReasonForVisit(reasons[i % reasons.length]);
+                appointment.setStatus("CONFIRMED");
+                appointment.setCost(150);
+                appointment.setRoomNum(400 + i);
+                appointment.setTimeslot(timeSlot);
+                appointment.setPatient(patient);
+                appointment.setDoctor(doctor);
+
+                appointmentRepository.save(appointment);
+
+                timeSlot.setAvailable(false);
+                timeSlot.setAppointment(appointment);
+                timeSlotRepository.save(timeSlot);
+
+                hospital.incrementOccupancy();
+            }
+
+            hospitalRepository.save(hospital);
+
+            System.out.println("Database Seeded Successfully");
+            System.out.println("Departments created: 5");
+            System.out.println("Doctors created: 15");
+            System.out.println("Patients created: 60");
+            System.out.println("Time slots created: 375");
+            System.out.println("Appointments created: 90");
+            System.out.println("Doctor usernames: doctor1 - doctor15");
+            System.out.println("Patient usernames: patient1 - patient60");
+            System.out.println("Password for all accounts: password");
         }
     }
 }

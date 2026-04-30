@@ -11,6 +11,7 @@ import SFWE405.project.code.Entities.Doctor;
 import SFWE405.project.code.Entities.Hospital;
 import SFWE405.project.code.Repositories.AppointmentRepository;
 import SFWE405.project.code.Repositories.DoctorRepository;
+import SFWE405.project.code.Repositories.PatientRepository;
 import SFWE405.project.code.Repositories.TimeSlotRepository;
 
 import java.util.List;
@@ -47,16 +48,21 @@ public class PatientController {
     @Autowired 
     private AppointmentService appService;
 
+    @Autowired
+    private PatientRepository patientRepo;
+
     @GetMapping("/home")
     public String patientHome(Model model) {
 
         Profile profile = authService.getLoggedInProfile();
         Patient patient = profile.getPatient();
         List<Doctor> doctors = doctorRepo.findAll();
+        List<Appointment> appointment = appointmentRepo.findByPatientId(patient.getId());
 
         model.addAttribute("profile", profile);
         model.addAttribute("patient", patient);
         model.addAttribute("doctors", doctors);
+        model.addAttribute("appointments", appointment);
 
         return "patient/home";
     }
@@ -69,30 +75,75 @@ public class PatientController {
     }
 
     @PostMapping("/schedule")
-    public String scheduleAppointment(@RequestParam Long timeslotId, @RequestParam Long doctorId, Model model) throws OccupancyMetException, InsufficientInfoException, TimeSlotTakenException {
+    public String scheduleAppointment(@RequestParam Long timeslotId, @RequestParam Long doctorId, @RequestParam(required = false) Long rescheduleId, Model model) throws OccupancyMetException, InsufficientInfoException, TimeSlotTakenException {
+        
+        if(rescheduleId != null){
+            Appointment old = appointmentRepo.findById(rescheduleId).orElseThrow(() -> new RuntimeException("Appointment not found"));
+            TimeSlot oldTS = old.getTimeslot();
+            oldTS.setAvailable(true);
+            oldTS.setAppointment(null);
+            timeSlotRepo.save(oldTS);
+            appointmentRepo.delete(old);
 
+        }
+        
         Profile profile = authService.getLoggedInProfile();
         Patient patient = profile.getPatient();
         Doctor doctor = doctorRepo.findById(doctorId).orElseThrow(() -> new RuntimeException("Doctor not found"));
         Hospital hospital = doctor.getDepartment().getHospital();
-
         TimeSlot timeslot = timeSlotRepo.findById(timeslotId).orElseThrow(() -> new RuntimeException("Timeslot not found"));
 
         Appointment appointment = new Appointment();
         appointment.setPatient(patient);
         appointment.setTimeslot(timeslot);
         appointment.setDoctor(doctor);
+        appointment.setDepartment(doctor.getDepartment());
         appointment.setStatus("PENDING");
 
         appService.schedule(appointment, hospital.getId());
 
-        timeslot.setAvailable(false);
+        timeslot = timeSlotRepo.findById(timeslotId).get();
+        timeslot.setAppointment(appointment);
         timeSlotRepo.save(timeslot);
-
-        appointmentRepo.save(appointment);
 
         return "redirect:/patient/home";
     }
 
+    @PostMapping("/cancel/{id}")
+    public String cancelAppointment(@PathVariable Long id){
+        Profile profile = authService.getLoggedInProfile();
+        Patient patient = profile.getPatient();
+        Appointment app = appointmentRepo.findById(id).orElseThrow(() -> new RuntimeException("Appointment not found"));;
+        Doctor doctor = app.getDoctor();
+        TimeSlot timeslot = app.getTimeslot();
+
+        patient.removeAppointment(id);
+        patientRepo.save(patient);
+        doctor.removeAppointment(id);
+        doctorRepo.save(doctor);
+        timeslot.setAvailable(true);
+        timeslot.setAppointment(null);
+        timeSlotRepo.save(timeslot);
+
+        appointmentRepo.delete(app);
+
+        return "redirect:/patient/home";
+    }
+
+    @GetMapping("/reschedule/{id}")
+    public String reschedule(@PathVariable Long id, Model model){
+        Profile profile = authService.getLoggedInProfile();
+        Patient patient = profile.getPatient();
+        List<Doctor> doctors = doctorRepo.findAll();
+        List<Appointment> apps = appointmentRepo.findByPatientId(patient.getId());
+
+        model.addAttribute("profile", profile);
+        model.addAttribute("patient", patient);
+        model.addAttribute("doctors", doctors);
+        model.addAttribute("appointments", apps);
+        model.addAttribute("rescheduleId", id);
+
+        return "patient/home";
+    }
 
 }

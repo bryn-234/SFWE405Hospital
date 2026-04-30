@@ -37,5 +37,8 @@ public class Patient {
     @JsonIgnore
     private Set<Appointment> appointments = new HashSet<>();
 
+    public void removeAppointment(Long appointmentId){
+        appointments.removeIf(app -> app.getId().equals(id));
+    }
 
 }

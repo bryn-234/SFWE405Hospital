@@ -37,4 +37,8 @@ public class Doctor {
     @JsonIgnoreProperties("doctor")
     @JsonIgnore // <--- Add this! 
     private Schedule schedule;
+
+    public void removeAppointment(Long appointmentId){
+        appointments.removeIf(app -> app.getId().equals(id));
+    }
 }
