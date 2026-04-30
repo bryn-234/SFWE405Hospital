@@ -85,15 +85,19 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Select Doctor</label>
-                            <select class="form-select" id="doctor-select">
+                            <select class="form-select" id="doctor-select" onchange="loadTimeSlots()">
                                 <option selected>Choose...</option>
-                                <option value="1">Dr. Smith (Cardiology)</option>
-                                <option value="2">Dr. Jones (General)</option>
+                                    <option th:each="doctor: ${doctors}"
+                                            th:value="${doctor.id}"
+                                            th:text="${doctor.name}">
+                                    </option>
                             </select>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Select Date</label>
-                            <input type="date" class="form-control" id="appt-date">
+                        <div class="col-md-6 mb-3" id="timeslot-container" style="display:none;">
+                            <label class="form-label">Select Timeslot</label>
+                            <select class="form-select" id="timeslot-select">
+                                <option value="">Choose a timeslot...</option>
+                            </select>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-success w-100">Confirm Appointment</button>
@@ -111,9 +115,37 @@
         }
 
         document.getElementById('schedule-form').onsubmit = function(e) {
-            e.preventDefault();
-            alert('Appointment Scheduled! (In a real app, this sends a POST request to your Spring backend)');
+            const timeslotId = document.getElementById('timeslot-select').value;
+            if (!timeslotId) {
+                e.preventDefault();
+                alert('Please select a timeslot before confirming.');
+            }
         };
+
+        document.getElementById('doctor-select').addEventListener('change', function() {
+        const doctorId = this.value;
+        const timeslotContainer = document.getElementById('timeslot-container');
+        const timeslotSelect = document.getElementById('timeslot-select');
+
+        if (!doctorId) {
+            timeslotContainer.style.display = 'none';
+            return;
+        }
+
+        fetch('/patient/timeslots/' + doctorId)
+            .then(response => response.json())
+            .then(timeslots => {
+                timeslotSelect.innerHTML = '<option value="">Choose a timeslot...</option>';
+                timeslots.forEach(ts => {
+                    const option = document.createElement('option');
+                    option.value = ts.id;
+                    option.text = ts.date + ': ' + ts.startTime + ' to ' + ts.endTime;
+                    timeslotSelect.appendChild(option);
+                });
+                timeslotContainer.style.display = 'block';
+            });
+        });
+
     </script>
 </body>
 </html>

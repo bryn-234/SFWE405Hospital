@@ -8,6 +8,7 @@ import SFWE405.project.code.Entities.Doctor;
 
 public interface DoctorRepository extends CrudRepository<Doctor, Long>{
     List<Doctor> findByName(String name);
+    List<Doctor> findAll();
 
     Doctor findById(long id);
 }
