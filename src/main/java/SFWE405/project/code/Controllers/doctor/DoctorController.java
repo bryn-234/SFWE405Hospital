@@ -14,8 +14,6 @@ import java.time.LocalDate;
 import SFWE405.project.code.Services.*;
 import SFWE405.project.code.Entities.*;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/doctor")
 public class DoctorController {
@@ -27,7 +25,7 @@ public class DoctorController {
     private HospitalService hospitalService;
     
     @Autowired
-    private ScheduleService scheduleService; // Injected our new service
+    private ScheduleService scheduleService;
 
     @GetMapping("/home")
     public String doctorHome(Model model) {
