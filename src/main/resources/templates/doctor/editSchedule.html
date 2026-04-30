@@ -144,26 +144,20 @@
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <div class="d-flex align-items-center gap-3">
                             <a th:href="@{/doctor/editSchedule(month=${prevMonth}, year=${prevYear})}" 
-                            class="btn btn-outline-primary btn-sm fw-bold" 
-                            style="border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; padding: 0;">
-                                &larr;
-                            </a>
+                            class="btn btn-outline-primary btn-sm fw-bold">&larr;</a>
                             
                             <h3 class="mb-0">
-                                <span th:text="${currentMonthName}">October</span> 
-                                <span th:text="${currentYear}">2026</span>
+                                <span th:text="${currentMonthName}">Month</span> 
+                                <span th:text="${currentYear}">Year</span>
                             </h3>
                             
                             <a th:href="@{/doctor/editSchedule(month=${nextMonth}, year=${nextYear})}" 
-                            class="btn btn-outline-primary btn-sm fw-bold"
-                            style="border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; padding: 0;">
-                                &rarr;
-                            </a>
+                            class="btn btn-outline-primary btn-sm fw-bold">&rarr;</a>
                         </div>
-                        <span class="badge bg-light text-dark border">Click slots to toggle availability</span>
+                        <span class="badge bg-light text-dark border">Click slots to toggle</span>
                     </div>
 
-                    <div class="calendar-grid">
+                    <div class="calendar-grid" th:if="${daysInMonth != null}">
                         <div class="calendar-header">Sun</div>
                         <div class="calendar-header">Mon</div>
                         <div class="calendar-header">Tue</div>
@@ -172,27 +166,36 @@
                         <div class="calendar-header">Fri</div>
                         <div class="calendar-header">Sat</div>
                         
-                        <div th:if="${offset > 0}" th:each="empty : ${#numbers.sequence(1, offset)}" class="calendar-day bg-light"></div>
+                        <div th:if="${offset > 0}" th:each="empty : ${#numbers.sequence(1, offset)}" class="calendar-day bg-light text-muted"></div>
 
-                        <div th:each="i : ${#numbers.sequence(1, daysInMonth)}" class="calendar-day">
-                            <span class="day-number" th:text="${i}"></span>
+                        <div th:each="dayNum : ${#numbers.sequence(1, daysInMonth)}" class="calendar-day">
+                            <span class="day-number" th:text="${dayNum}"></span>
                             
-                            <div th:each="ts : ${timeSlots}" 
-                                th:if="${#strings.endsWith(ts.date, '-' + (i < 10 ? '0' + i : i))}">
-                                
-                                <form th:action="@{/doctor/toggleSlot}" method="post" class="slot-form">
-                                    <input type="hidden" name="slotId" th:value="${ts.id}">
+                            <th:block th:each="ts : ${timeSlots}">
+                                <div th:if="${ts.date.getDayOfMonth() == dayNum}">
                                     
-                                    <input type="hidden" name="currentMonth" th:value="${targetMonth}">
-                                    <input type="hidden" name="currentYear" th:value="${currentYear}">
-                                    
-                                    <button type="submit" 
-                                            th:class="${ts.available} ? 'slot-pill available' : 'slot-pill unavailable'">
-                                        <span th:text="${ts.startTime}"></span>
-                                    </button>
-                                </form>
-                            </div>
+                                    <form th:action="@{/doctor/toggleSlot}" method="post" class="slot-form">
+                                        <input type="hidden" name="slotId" th:value="${ts.id}">
+                                        <input type="hidden" name="currentMonth" th:value="${targetMonth}">
+                                        <input type="hidden" name="currentYear" th:value="${currentYear}">
+                                        
+                                        <button type="submit" 
+                                                th:disabled="${ts.appointment != null}"
+                                                th:class="${ts.appointment != null} ? 'slot-pill booked' : (${ts.available} ? 'slot-pill available' : 'slot-pill unavailable')"
+                                                th:title="${ts.appointment != null ? 'Booked - Locked' : 'Toggle Availability'}">
+                                            
+                                            <span th:text="${ts.startTime}">00:00</span>
+                                            <span th:if="${ts.appointment != null}">🔒</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </th:block>
                         </div>
+                    </div>
+
+                    <div th:if="${daysInMonth == null}" class="alert alert-warning m-4">
+                        <strong>System Error:</strong> Calendar data (daysInMonth) was not provided by the server. 
+                        Check your DoctorController model attributes.
                     </div>
                 </div>
             </div>
