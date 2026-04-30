@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import SFWE405.project.code.DTOs.HospitalOccupancyDTO;
 import SFWE405.project.code.Entities.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/doctor")
 public class DoctorController {
@@ -41,8 +43,8 @@ public class DoctorController {
         model.addAttribute("profile", profile);
         model.addAttribute("schedule", schedule);
         model.addAttribute("department", department);
-        model.addAttribute("timeSlots", schedule.getTimeSlot());
-        model.addAttribute("occupancy", occupancy);
+        List<TimeSlot> sortedTimeSlots = tsRepo.findByScheduleIdOrderByDateAscStartTimeAsc(schedule.getId());
+        model.addAttribute("timeSlots", sortedTimeSlots);        model.addAttribute("occupancy", occupancy);
         return "doctor/home";
     }
 
@@ -52,8 +54,8 @@ public class DoctorController {
         Doctor doctor = profile.getDoctor();
         Schedule schedule = doctor.getSchedule();
         model.addAttribute("doctor", doctor);
-        model.addAttribute("timeSlots", schedule.getTimeSlot());
-        return "doctor/editSchedule";
+        List<TimeSlot> sortedTimeSlots = tsRepo.findByScheduleIdOrderByDateAscStartTimeAsc(schedule.getId());
+        model.addAttribute("timeSlots", sortedTimeSlots);        return "doctor/editSchedule";
     }
 
     @PostMapping("/editAvailability")
@@ -62,8 +64,9 @@ public class DoctorController {
         Doctor doctor = profile.getDoctor();
         Schedule schedule = doctor.getSchedule();
 
-        for(TimeSlot ts: schedule.getTimeSlot()){
-            String param = httpRequest.getParameter("available_" + ts.getId());
+        List<TimeSlot> sortedTimeSlots = tsRepo.findByScheduleIdOrderByDateAscStartTimeAsc(schedule.getId());
+
+        for (TimeSlot ts : sortedTimeSlots) {            String param = httpRequest.getParameter("available_" + ts.getId());
             ts.setAvailable(param != null);
             tsRepo.save(ts);
         }

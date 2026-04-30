@@ -29,6 +29,7 @@ import SFWE405.project.code.Repositories.DepartmentRepository;
 import SFWE405.project.code.Repositories.DoctorRepository;
 import SFWE405.project.code.Repositories.HospitalRepository;
 import SFWE405.project.code.Repositories.PatientRepository;
+import SFWE405.project.code.Repositories.TimeSlotRepository;
 import SFWE405.project.code.Services.AppointmentService;
 import SFWE405.project.code.Services.DoctorService;
 import SFWE405.project.code.Services.HospitalService;
@@ -58,6 +59,9 @@ public class HospitalController {
 
     @Autowired
     private DoctorService doctorService;
+
+    @Autowired
+    private TimeSlotRepository tsRepo;
 
     @GetMapping("/HMS/patients")
     public List<Patient> showPatients(){
@@ -167,8 +171,7 @@ public class HospitalController {
             throw new RuntimeException("Doctor has no schedule");
         }
 
-        return doctor.getSchedule().getTimeSlot().stream().toList();
-    }
+        return tsRepo.findByScheduleIdOrderByDateAscStartTimeAsc(doctor.getSchedule().getId());    }
 
     @GetMapping("/HMS/appointment/{id}/status")
     public String getAppointmentStatus(@PathVariable Long id) {
