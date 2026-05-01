@@ -214,10 +214,30 @@ public class AppointmentService {
             throw new IllegalStateException("Cannot edit an appointment that is already checked in or completed.");
         }
 
-        // Verify the new timeslot is available
-        checkTimeSlot(newTimeSlot);
+        // Ensuring that when patient reschedules their appointment that the old time slot is updated to available
+        // Added 5/1/2026
+        Long newSlotId = newTimeSlot.getId();
+        TimeSlot rescheduledTimeSlot = TimeslotRepo.findById(newSlotId)
+                .orElseThrow(() -> new RuntimeException("Time slot not found"));
 
-        appt.setTimeslot(newTimeSlot);
+        // Verify the new timeslot is available
+        checkTimeSlot(rescheduledTimeSlot);
+
+        // Updating old time slot to available
+        TimeSlot oldTimeSlot = appt.getTimeslot();
+        if (oldTimeSlot != null) {
+            oldTimeSlot.setAvailable(true);
+            oldTimeSlot.setAppointment(null);
+            TimeslotRepo.save(oldTimeSlot);
+        }
+
+        // New set appointment is the rescheduled time slot
+        appt.setTimeslot(rescheduledTimeSlot);
+
+        rescheduledTimeSlot.setAvailable(false);
+        rescheduledTimeSlot.setAppointment(appt);
+        TimeslotRepo.save(rescheduledTimeSlot);
+
         return appointmentRepository.save(appt);
     }
 
