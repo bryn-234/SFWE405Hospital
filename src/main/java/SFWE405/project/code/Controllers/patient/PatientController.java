@@ -76,15 +76,14 @@ public class PatientController {
 
     @PostMapping("/schedule")
     public String scheduleAppointment(@RequestParam Long timeslotId, @RequestParam Long doctorId, @RequestParam(required = false) Long rescheduleId, Model model) throws OccupancyMetException, InsufficientInfoException, TimeSlotTakenException {
-        
-        if(rescheduleId != null){
-            Appointment old = appointmentRepo.findById(rescheduleId).orElseThrow(() -> new RuntimeException("Appointment not found"));
-            TimeSlot oldTS = old.getTimeslot();
-            oldTS.setAvailable(true);
-            oldTS.setAppointment(null);
-            timeSlotRepo.save(oldTS);
-            appointmentRepo.delete(old);
 
+        if (rescheduleId != null) {
+            TimeSlot newTimeSlot = timeSlotRepo.findById(timeslotId)
+                    .orElseThrow(() -> new RuntimeException("Timeslot not found"));
+
+            appService.editAppointment(rescheduleId, newTimeSlot);
+
+            return "redirect:/patient/home";
         }
         
         Profile profile = authService.getLoggedInProfile();

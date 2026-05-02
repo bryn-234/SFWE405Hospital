@@ -231,9 +231,15 @@ public class AppointmentService {
             TimeslotRepo.save(oldTimeSlot);
         }
 
-        // New set appointment is the rescheduled time slot
+        // Assign new time slot
         appt.setTimeslot(rescheduledTimeSlot);
 
+    // Assign new doctor and department
+        Doctor newDoctor = rescheduledTimeSlot.getSchedule().getDoctor();
+        appt.setDoctor(newDoctor);
+        appt.setDepartment(newDoctor.getDepartment());
+
+    // Mark new slot unavailable
         rescheduledTimeSlot.setAvailable(false);
         rescheduledTimeSlot.setAppointment(appt);
         TimeslotRepo.save(rescheduledTimeSlot);
