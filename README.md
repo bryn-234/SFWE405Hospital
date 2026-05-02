@@ -1,54 +1,246 @@
 # Hospital Management System
 
 ## Overview
-This project is a **Hospital Management System** developed in **Spring Boot** by a team of 5 undergraduate students. The goal of the project is to provide a structured and easy-to-use system for scheduling an appointment at a hospital. We are currently in the process of completing this project. The system models a hospital environment with multiple interconnected entities, providing RESTful APIs to manage appointments, doctors, patients, departments, profiles, schedules, and time slots. Endpoints are tested using **Postman**.
+
+This project is a **Hospital Management System** developed in **Spring Boot** by a team of 5 undergraduate students. The system provides a structured and user-friendly way to manage hospital operations, including scheduling appointments, managing doctors and patients, and tracking hospital occupancy.
+
+The application models a hospital environment using interconnected entities and provides both:
+
+* **RESTful APIs** (tested with Postman)
+* **Web-based UI** (Doctor and Patient portals)
 
 ---
 
 ## Project Structure
 
-The application is organized around **8 main entities**, each with its own repository:
+The application is organized around **8 main entities**:
 
-| Entity            | Description                                                                 |
-|------------------|-----------------------------------------------------------------------------|
-| **Hospital**      | Represents a hospital, including its name, address, and departments.       |
-| **Department**    | Represents hospital departments (e.g., Cardiology, Pediatrics).           |
-| **Doctor**        | Represents doctors working in the hospital, linked to a department.       |
-| **Patient**       | Represents patients registered in the hospital.                            |
-| **Appointment**   | Represents appointments between patients and doctors.                     |
-| **Schedule**      | Repersents the doctor's schedule that a patient can look at to make an appointment.            |
-| **TimeSlot**      | Represents a section of the doctor's schedule that a patient can choose to have their appointment.            |
-| **Profile**       | Represents patient or doctor's account to the system.            |
+| Entity          | Description                                                          |
+| --------------- | -------------------------------------------------------------------- |
+| **Hospital**    | Represents a hospital, including capacity and departments.           |
+| **Department**  | Represents hospital departments (e.g., Cardiology, Emergency).      |
+| **Doctor**      | Represents doctors, each linked to a department and schedule.        |
+| **Patient**     | Represents patients with personal and medical information.           |
+| **Appointment** | Represents scheduled appointments between patients and doctors.      |
+| **Schedule**    | Represents a doctor’s full schedule.                                 |
+| **TimeSlot**    | Represents individual appointment slots within a schedule.           |
+| **Profile**     | Handles authentication (login credentials for doctors and patients). |
 
-Each entity has a corresponding **Spring Data JPA repository** to manage database operations.
+Each entity is backed by a **Spring Data JPA repository** for database operations.
 
 ---
 
 ## Key Components
 
-- **Controllers**  
-  The project includes a **HospitalController** to handle API requests. Additional controllers for other entities can be added similarly.
+- **Controllers**
+  - Multiple controllers handle both UI and REST endpoints
+  - Example: `HospitalController`, `DoctorController`, authentication-related controllers
 
-- **Repositories**  
-  Each entity has a dedicated repository interface extending `JpaRepository`, providing CRUD functionality.
+- **Services**
+  - Business logic is handled in a dedicated service layer
+  - Examples:
+    - `AppointmentService`
+    - `HospitalService`
+    - `AuthService`
+    - `ProfileService`
 
-- **Services** *(in progress)*  
-  A service layer for business logic is planned and will be implemented in future updates.
+- **DTOs**
+  - Used to transfer structured data between layers
+  - Example:
+    - `HospitalOccupancyDTO`
 
-- **Testing** *(in progress)*  
-  Endpoints are being tested using **Postman**, with a complete Postman workspace to be developed as the project progresses.
+- **Security**
+  - Implemented using **Spring Security**
+  - Supports authentication and role-based access (Doctor / Patient)
 
---- 
+- **Repositories**
+  - Each entity has a `JpaRepository` for database operations
 
-## Project Status
+* **Frontend**
 
-  This system is currently under development. At this stage, the project includes: 
-  - The 8 main entities: Hosptial, Department, Doctor, Patient, Appointment, Profile, Schedule, & TimeSlot
-  - Repositories for each entity
-  - A HospitalController to handle API requests
-  - A AppointmentService to handle all Appointment related business logic
-  - A HospitalService to handle initializing of entities for Postman testing and hospital related business logic
-  - A Postman workplace for testing requirements
- 
-Planned future enhancements include:
-  - Developing a Presentation layer (user interfaces for Doctor and Patient entities)
+  * Built using **Thymeleaf**
+  * Provides a Doctor dashboard with scheduling and occupancy view
+  * Provides a Patient dashboard to schedule or edit existing appointments
+  * Both Doctor or Patient can edit their username, email, or password
+
+---
+
+## RUNNING THE APPLICATION
+
+### Start the application:
+
+**Command line:**
+
+```bash
+./mvnw spring-boot:run
+```
+
+**OR**
+
+**IntelliJ:**
+Click the Run (▶) button in `HospitalSystemApplication`
+
+---
+
+Once running:
+
+```text
+http://localhost:8080
+```
+
+---
+
+## LOGIN & TEST ACCOUNTS
+
+Go to:
+
+```text
+http://localhost:8080/login
+```
+
+### Doctor Accounts
+
+```text
+doctor1 → doctor15
+password
+```
+
+### Patient Accounts
+
+```text
+patient1 → patient60
+password
+```
+
+---
+
+## SEEDED DATA (AUTO-GENERATED)
+
+On startup, the system automatically seeds:
+
+* 1 Hospital
+* 5 Departments:
+
+  * Emergency
+  * Radiology
+  * Pediatrics
+  * Cardiology
+  * Oncology
+* 15 Doctors (each with schedules)
+* 60 Patients (with realistic demographic + medical data)
+* 375 Time Slots (25 per doctor)
+* ~90 Appointments (randomly distributed)
+
+Each doctor has:
+
+* 5 weekdays (Mon–Fri)
+* 5 time slots per day
+
+---
+
+## FEATURES
+
+* Doctor dashboard
+* View and edit availability
+* Appointments displayed with **full patient names**
+* Hospital occupancy tracking
+* Patient profiles with:
+
+  * birth date
+  * phone number
+  * medical records
+  * medications
+* Appointment scheduling system
+* Sorted time slots (by date and time)
+
+---
+
+## TESTING WITH POSTMAN
+
+1. Open Postman collection
+2. Go to **Authorization**
+3. Select **Basic Auth**
+
+Use:
+
+```text
+Username: doctor1
+Password: password
+```
+
+---
+
+### Example Endpoints
+
+| Action               | Endpoint                              |
+| -------------------- | ------------------------------------- |
+| Get patients         | `GET /HMS/patients`                   |
+| Get doctors          | `GET /HMS/doctors`                    |
+| Schedule appointment | `POST /HMS/{id}/schedule-Appointment` |
+| Edit appointment     | `POST /HMS/{id}/edit-Appointment`     |
+| Get occupancy        | `GET /HMS/{id}/occupancy`             |
+
+---
+
+## DATABASE (H2 CONSOLE)
+
+Access:
+
+```text
+http://localhost:8080/h2-console
+```
+
+Credentials:
+
+```text
+Username: sa
+Password: password
+```
+
+---
+
+## IMPORTANT NOTES
+
+* The database is **in-memory**
+  → resets on restart
+
+* Authentication is required for most API endpoints
+
+* Seed data is generated automatically at startup
+
+---
+
+## PROJECT STATUS
+
+### Completed:
+
+* All 8 entities fully implemented
+* Repository layer complete
+* Service layer implemented for core logic
+* Doctor UI functional
+* Appointment system working
+* Occupancy tracking implemented
+* Data seeding with realistic test data
+
+---
+
+## FUTURE ENHANCEMENTS
+
+* Advanced appointment filtering
+* Role-based access improvements
+* Persistent database (replace H2)
+* Analytics/dashboard features
+
+---
+
+## SUMMARY
+
+This system simulates a real-world hospital environment with:
+
+* structured scheduling
+* realistic patient and doctor data
+* appointment management
+* authentication and role separation
+* both API and UI interaction
+
+---
