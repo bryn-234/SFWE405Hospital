@@ -30,7 +30,6 @@
     </header>
 
     <main class="container">
-        <input type="hidden" id="reschedule-id" name="rescheduleId" th:value="${rescheduleId}"/>
         <div class="row g-4 mb-5">
             <div class="col-md-6">
                 <div class="card h-100 p-4 text-center">
@@ -91,6 +90,7 @@
             <h2>Book an Appointment</h2>
             <div class="card p-4 mt-3">
                 <form id="schedule-form" action="/patient/schedule" method="post">
+                    <input type="hidden" id="reschedule-id" name="rescheduleId" th:value="${rescheduleId}"/>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Select Doctor</label>
